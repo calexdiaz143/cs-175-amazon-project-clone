@@ -6,3 +6,4 @@ A text-based machine learning thingy.
 
 ## Google Docs
 [Project Proposal](https://docs.google.com/document/d/1hshj-fZLoi63BUrHVJ_Q99C_sCyEwYaukFC7FMrQfD0/edit)
+[Project Progress Report](https://docs.google.com/document/d/1Wwyn0p2aMKDBf04hzSTeHaJUC_Zz39L2VguePel3p94/edit)
