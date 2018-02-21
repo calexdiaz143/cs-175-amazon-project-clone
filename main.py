@@ -1,25 +1,32 @@
 # from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
-from nltk import FreqDist
-from nltk.corpus import stopwords
+from scipy.sparse import csr_matrix, vstack, hstack
+from random import shuffle
+import parsers as ps
 import numpy as np
 import json
-from random import shuffle
 
 def load_reviews(filename, category, percent):
-    file_content = open(filename).read().split('\n')[:-1] 
+    file_content = open(filename).read().split('\n')[:-1]
     parsedData = []
+    
     for i in file_content:
-        tempDict = json.loads(i)
-        tempDict['helpful'] = tempDict['helpful'][0]/(tempDict['helpful'][1] if tempDict['helpful'][1] != 0 else 1)
+        currItem = json.loads(i)
+        newDict = dict()
+        newDict['reviewerID'] = ps.idToNum(currItem['reviewerID'])
+        newDict['overall'] = ps.overallToNum(currItem['overall'])
+        newDict['helpful'] = ps.helpfulToNum(currItem['helpful'])
+        newDict['unixReviewTime'] = currItem['unixReviewTime']
+        newDict['asin'] = ps.idToNum(currItem['asin'])
+        newDict['summary'] = currItem['summary']
+        newDict['reviewText'] = currItem['reviewText']
         
-        # tempList = [tempDict[i] for i in tempDict]
-        tempList = [tempDict['helpful']]
-        parsedData.append((tempList, category))
+        newList = [newDict[i] for i in newDict]
+        parsedData.append(newList)
         
-    shuffle(parsedData)
-    splitIndex = int(percent*len(file_content))
     print(parsedData[0])
+    splitIndex = int(percent*len(file_content))    
+    shuffle(parsedData)
     return np.array(parsedData[:splitIndex]), np.array(parsedData[splitIndex:])
 
 # Loading Data
@@ -32,6 +39,10 @@ def load_all():
     shuffle(allReviewsTest)
     return allReviewsTrain, allReviewsTest
 
+'''
+    parsedData = [(featureList,category)...(featureList,category)]
+    featureList = [f1,f2,f3(sparse-matrix),f4(sparse-matrix)]
+'''
 def trainNaiveBayes(allReviewsTrain):
     X, Y = zip(*allReviewsTrain)
     classifier  = MultinomialNB().fit(X,Y)
@@ -39,6 +50,4 @@ def trainNaiveBayes(allReviewsTrain):
 
 
 train, test = load_all()
-print(train.shape)
-print(test.shape)
-trainNaiveBayes(train)
+classifier = trainNaiveBayes(train)
