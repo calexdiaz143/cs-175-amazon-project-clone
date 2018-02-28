@@ -14,8 +14,9 @@ def helpfulToNum(helpfulTuple):
 def overallToNum(overallRating):
     return int(overallRating)
 
-def sparsify(corpus):
-    countVectorizer = CountVectorizer(stop_words=stopwords.words('english'), min_df = 2) 
-    textCounts = countVectorizer.fit_transform(corpus)  
+def sparsify(train_corpus, test_corpus):
+    countVectorizer = CountVectorizer(stop_words=stopwords.words('english'), min_df = 5)
+    train_text_counts = countVectorizer.fit_transform(train_corpus)
+    test_text_counts = countVectorizer.transform(test_corpus)
     # add tf-idf feature later on
-    return textCounts
+    return train_text_counts, test_text_counts
