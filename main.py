@@ -1,80 +1,97 @@
 # from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
-from scipy.sparse import csr_matrix, vstack, hstack
+from scipy.sparse import csr_matrix, hstack, save_npz, load_npz
 from random import shuffle
-import parsers as ps
 import numpy as np
 import json
+import parsers as ps
 
-int('A2SUAM1J3GNN3B', 36)
-def base36ToInt(base36):
-    z = 0;
-    mapping = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-    for i, c in enumerate(reversed(list(base36.lower()))):
-        z += mapping.index(c) * 36 ** i
-    return z
-base36ToInt('A2SUAM1J3GNN3B')
+SKIP_LOAD_ALL = True
 
-def load_reviews(filename, category, percent):
-    file_content = open(filename).read().split('\n')[:-1]
-    parsedData = []
-    
-    for i in file_content:
-<<<<<<< Updated upstream
-        currItem = json.loads(i)
-        newDict = dict()
-        newDict['reviewerID'] = ps.idToNum(currItem['reviewerID'])
-        newDict['overall'] = ps.overallToNum(currItem['overall'])
-        newDict['helpful'] = ps.helpfulToNum(currItem['helpful'])
-        newDict['unixReviewTime'] = currItem['unixReviewTime']
-        newDict['asin'] = ps.idToNum(currItem['asin'])
-        newDict['summary'] = currItem['summary']
-        newDict['reviewText'] = currItem['reviewText']
-        
-        newList = [newDict[i] for i in newDict]
-        parsedData.append(newList)
-        
-=======
-        tempDict = json.loads(i)
-        tempDict['helpful'] = tempDict['helpful'][0]/(tempDict['helpful'][1] if tempDict['helpful'][1] != 0 else 1)
+CATEGORIES = [
+	'Musical_Instruments',
+	'Patio_Lawn_and_Garden'
+]
 
-        # tempList = [tempDict[i] for i in tempDict]
-        tempList = [tempDict['helpful']]
-        parsedData.append((tempList, category))
+def load_reviews(path, percent):
+    json_reviews = open(path).read().split('\n')[:-1]
+    reviews = []
+    for json_review in json_reviews:
+        raw_review = json.loads(json_review)
+        review = [
+        	ps.idToNum(raw_review['reviewerID']),
+        	ps.idToNum(raw_review['asin']),
+        	ps.helpfulToNum(raw_review['helpful']),
+        	ps.overallToNum(raw_review['overall']),
+        	raw_review['unixReviewTime'],
+        	raw_review['summary'],
+        	raw_review['reviewText']
+    	]
+        reviews.append(review)
 
-    shuffle(parsedData)
-    splitIndex = int(percent*len(file_content))
->>>>>>> Stashed changes
-    print(parsedData[0])
-    splitIndex = int(percent*len(file_content))    
-    shuffle(parsedData)
-    return np.array(parsedData[:splitIndex]), np.array(parsedData[splitIndex:])
+    shuffle(reviews)
 
-# Loading Data
+    split_index = int(percent * len(reviews))
+    train = np.array(reviews[:split_index])
+    test = np.array(reviews[split_index:])
+    return train, test
+
 def load_all():
-    musicalInstrumentTrain, musicalInstrumentTest = load_reviews('db/reviews_Musical_Instruments_5.json', 'music', .75)
-    patioLawnGardenTrain, patioLawnGardenTest = load_reviews('db/reviews_Patio_Lawn_and_Garden_5.json', 'patio', .75)
-    allReviewsTrain = np.concatenate((musicalInstrumentTrain, patioLawnGardenTrain))
-    allReviewsTest = np.concatenate((musicalInstrumentTest, patioLawnGardenTest))
-    shuffle(allReviewsTrain)
-    shuffle(allReviewsTest)
-    return allReviewsTrain, allReviewsTest
+    train_reviews = []
+    test_reviews = []
+    train_categories = []
+    test_categories = []
+    for category in CATEGORIES:
+        train, test = load_reviews('db/reviews_' + category + '_5.json', 0.75)
+        train_reviews.append(train)
+        test_reviews.append(test)
+        train_categories.append([category] * train.shape[0])
+        test_categories.append([category] * test.shape[0])
 
-'''
-    parsedData = [(featureList,category)...(featureList,category)]
-    featureList = [f1,f2,f3(sparse-matrix),f4(sparse-matrix)]
-'''
-def trainNaiveBayes(allReviewsTrain):
-    X, Y = zip(*allReviewsTrain)
-    classifier  = MultinomialNB().fit(X,Y)
+    train_reviews = np.concatenate(train_reviews)
+    test_reviews = np.concatenate(test_reviews)
+    train_categories = np.concatenate(train_categories)
+    test_categories = np.concatenate(test_categories)
+
+    train_all = list(zip(train_reviews, train_categories))
+    test_all = list(zip(test_reviews, test_categories))
+    shuffle(train_all)
+    shuffle(test_all)
+    train_reviews, train_categories = zip(*train_all)
+    test_reviews, test_categories = zip(*test_all)
+    return train_reviews, test_reviews, np.array(train_categories), np.array(test_categories)
+
+def parse_BOW(features):
+    summary_corpus = []
+    review_corpus = []
+    final_features = []
+    for i, feature in enumerate(features):
+        summary_corpus.append(feature[5])
+        review_corpus.append(feature[6])
+        final_features.append(feature[0:5])
+
+    summary_BOW = ps.sparsify(summary_corpus)
+    review_BOW = ps.sparsify(review_corpus)
+    final_features = hstack([csr_matrix(final_features, dtype=np.int64), summary_BOW, review_BOW])
+    return final_features
+
+def train_naive_bayes(train_reviews):
+    X, Y = zip(*train_reviews)
+    classifier  = MultinomialNB().fit(X, Y)
     return classifier
 
-
-train, test = load_all()
-<<<<<<< Updated upstream
-classifier = trainNaiveBayes(train)
-=======
-print(train.shape)
-print(test.shape)
-trainNaiveBayes(train)
->>>>>>> Stashed changes
+if SKIP_LOAD_ALL:
+    train_x = load_npz('train_x.npz')
+    test_x = load_npz('test_x.npz')
+    train_y = np.load('train_y.npy')
+    test_y = np.load('test_y.npy')
+else:
+    train_x, test_x, train_y, test_y = load_all()
+    train_x = parse_BOW(train_x)
+    test_x = parse_BOW(test_x)
+    save_npz('train_x',train_x)
+    save_npz('test_x',test_x)
+    np.save('train_y',train_y)
+    np.save('test_y',train_y)
+    
+#classifier = train_naive_bayes(train)

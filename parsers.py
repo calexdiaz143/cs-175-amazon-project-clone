@@ -2,13 +2,13 @@ from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
 
 def idToNum(idString):
-    return int(idString,36)
+    return 1 #int(idString,36)
 
 def helpfulToNum(helpfulTuple):
     if(helpfulTuple[1] == 0):
-        helpfulness = 0.5
+        helpfulness = 50
     else:
-        helpfulness = helpfulTuple[0]/helpfulTuple[1]
+        helpfulness = int(100*(helpfulTuple[0]/helpfulTuple[1]))
     return helpfulness
 
 def overallToNum(overallRating):
