@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="index.css">
+		<title>Amazon Review Predictor</title>
+	</head>
+	<body>
+		<div id="title"></div>
+		<div id="container">
+			<h1>Amazon Review Predictor</h1>
+			<div class="divider"></div>
+			<div id="review">
+				<div class="flex">
+					<img alt="default" src="default.png" id="image">
+					<div>
+						<input type="text" class="full" id="name" placeholder="Reviewer Name" required>
+						<div class="usually-read-only">
+							<input type="text" class="full" id="id" placeholder="Reviewer ID" required>
+						</div>
+					</div>
+				</div>
+				<div class="flex">
+					<div id="overall" data-rating="0">
+						<img alt="stars" src="stars.png">
+					</div>
+					<input type="text" id="summary" placeholder="Review Title" required>
+				</div>
+				<div class="usually-read-only">
+					<input type="date" id="time" required>
+					(<span id="unix-time" placeholder="Unix Time" required>Unix Time</span>)
+				</div>
+				<textarea id="text" placeholder="Review Text" required></textarea>
+				<div class="usually-read-only right">
+					<input type="text" class="right" id="helpful" placeholder="0" required>
+					<span id="plural-handler">people</span> found this helpful.
+				</div>
+				<div class="usually-read-only right">
+					<input type="text" class="right" id="unhelpful" placeholder="0" required>
+					did not.
+				</div>
+			</div>
+			<div class="divider"></div>
+			<button id="demo" data-active="false">Activate Demo</button>
+			<button id="predict">Predict Product Category</button>
+		</div>
+		<script src="index.js"></script>
+	</body>
+</html>
