@@ -9,7 +9,7 @@ CATEGORIES = [
 ]
 
 if __name__ == '__main__':
-    train_X, train_Y, test_X, test_Y = loader.load(CATEGORIES, 1)
+    train_X, train_Y, test_X, test_Y = loader.load(CATEGORIES)
 
     tester.train_predict_error(train_X, train_Y, test_X, test_Y, trainer.naive_bayes)
     tester.train_predict_error(train_X, train_Y, test_X, test_Y, trainer.logistic_regression)

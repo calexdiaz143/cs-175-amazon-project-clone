@@ -2,6 +2,7 @@
 from sklearn.feature_extraction.text import CountVectorizer
 from scipy.sparse import csr_matrix, hstack
 from nltk.corpus import stopwords
+import numpy as np
 
 def sparsify(train_corpus, test_corpus):
     countVectorizer = CountVectorizer(stop_words=stopwords.words('english'), min_df=5)
@@ -27,8 +28,8 @@ def parse_BOW(train_features, test_features):
         test_review_corpus.append(feature[6])
         test_final_features.append(feature[0:5])
 
-    train_summary_BOW, test_summary_BOW = ps.sparsify(train_summary_corpus, test_summary_corpus)
-    train_review_BOW, test_review_BOW = ps.sparsify(train_review_corpus, test_review_corpus)
+    train_summary_BOW, test_summary_BOW = sparsify(train_summary_corpus, test_summary_corpus)
+    train_review_BOW, test_review_BOW = sparsify(train_review_corpus, test_review_corpus)
     train_final_features = hstack([csr_matrix(train_final_features, dtype=np.int64), train_summary_BOW, train_review_BOW])
     test_final_features = hstack([csr_matrix(test_final_features, dtype=np.int64), test_summary_BOW, test_review_BOW])
     return train_final_features, test_final_features

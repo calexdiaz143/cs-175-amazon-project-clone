@@ -59,19 +59,19 @@ def get_categories(categories):
     return train_reviews, np.array(train_categories), test_reviews, np.array(test_categories)
 
 def save(train_X, train_Y, test_X, test_Y):
-    save_npz('train_X', train_X)
-    np.save('train_Y', train_Y)
-    save_npz('test_X', test_X)
-    np.save('test_Y', train_Y)
+    save_npz('saved/train_X', train_X)
+    np.save('saved/train_Y', train_Y)
+    save_npz('saved/test_X', test_X)
+    np.save('saved/test_Y', train_Y)
 
 def load(categories, use_saved = False):
     if use_saved:
-        train_X = load_npz('train_X.npz')
-        train_Y = np.load('train_Y.npy')
-        test_X = load_npz('test_X.npz')
-        test_Y = np.load('test_Y.npy')
+        train_X = load_npz('saved/train_X.npz')
+        train_Y = np.load('saved/train_Y.npy')
+        test_X = load_npz('saved/test_X.npz')
+        test_Y = np.load('saved/test_Y.npy')
     else:
         train_X, train_Y, test_X, test_Y = get_categories(categories)
-        train_X, test_X = parse_BOW(train_X, test_X)
-        loader.save(train_X, train_Y, test_X, test_Y)
+        train_X, test_X = parser.parse_BOW(train_X, test_X)
+        save(train_X, train_Y, test_X, test_Y)
     return train_X, train_Y, test_X, test_Y
