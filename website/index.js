@@ -126,7 +126,7 @@ function init() {
 		unixReviewTime.innerHTML = formatTimeForDB(reviewTime.value).unixReviewTime;
 	});
 	var autocompleter = function () {
-		autocomplete(7);
+		autocomplete(17);
 	};
 	demo.addEventListener("click", function () {
 		if (demo.dataset.active == "true") {
