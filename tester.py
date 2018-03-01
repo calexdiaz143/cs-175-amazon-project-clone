@@ -1,19 +1,5 @@
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
+from __future__ import division
 from collections import Counter
-
-def train_naive_bayes(X, Y):
-    classifier  = MultinomialNB().fit(X, Y)
-    return classifier
-
-def train_logistic_regression(X, Y):
-    classifier  = LogisticRegression().fit(X, Y)
-    return classifier
-
-def train_svm(X, Y):
-    classifier  = SVC().fit(X, Y)
-    return classifier
 
 def get_majority(prediction_list, index):
     prediction = [pred[index] for pred in prediction_list]
@@ -38,8 +24,7 @@ def error_ratio(Y_hat, Y):
             error += 1
     return error / Y.shape[0]
 
-def train_predict_error(train_X, train_Y, test_X, test_Y, trainer):
-    classifier = trainer(train_X, train_Y)
-    prediction = classifier.predict(test_X)
+def train_predict_error(train_X, train_Y, test_X, test_Y, classifer):
+    prediction = classifer(train_X, train_Y).predict(test_X)
     error = error_ratio(prediction, test_Y)
     print(error)
