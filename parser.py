@@ -4,6 +4,23 @@ from scipy.sparse import csr_matrix, hstack
 from nltk.corpus import stopwords
 import numpy as np
 
+def get_helpful_percentage(ratio):
+    if(ratio[1] == 0):
+        return 50
+    return int(100 * ratio[0] / ratio[1])
+
+def parse_review(raw_review):
+    return [
+        1, 1, # TODO: figure out how to reduce the size of int(x, 36)
+        # int(raw_review['reviewerID'], 36),
+        # int(raw_review['asin'], 36),
+        get_helpful_percentage(raw_review['helpful']),
+        int(raw_review['overall']),
+        raw_review['unixReviewTime'],
+        raw_review['summary'],
+        raw_review['reviewText']
+    ]
+
 def sparsify(train_corpus, test_corpus):
     countVectorizer = CountVectorizer(stop_words=stopwords.words('english'), min_df=5)
     train_text_counts = countVectorizer.fit_transform(train_corpus)

@@ -4,26 +4,12 @@ import numpy as np
 import json
 import parser
 
-def get_helpful_percentage(ratio):
-    if(ratio[1] == 0):
-        return 50
-    return int(100 * ratio[0] / ratio[1])
-
 def get_category(path, percent):
     json_reviews = open(path).read().split('\n')[:-1]
     reviews = []
     for json_review in json_reviews:
         raw_review = json.loads(json_review)
-        review = [
-            1, 1, # TODO: figure out how to reduce the size of int(x, 36)
-        	# int(raw_review['reviewerID'], 36),
-        	# int(raw_review['asin'], 36),
-        	get_helpful_percentage(raw_review['helpful']),
-        	int(raw_review['overall']),
-        	raw_review['unixReviewTime'],
-        	raw_review['summary'],
-        	raw_review['reviewText']
-    	]
+        review = parser.parse_review(raw_review)
         reviews.append(review)
 
     shuffle(reviews)
