@@ -136,6 +136,10 @@ button:hover {
 	background: black;
 	color: white;
 	width: 500px;
+<<<<<<< HEAD
 	margin: 10px auto;
+=======
+	margin: 10px;
+>>>>>>> 0a67821721bae82e338b94fea9d9baa426ae5417
 	border-radius: 4px;
 }
