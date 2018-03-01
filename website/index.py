@@ -1,4 +1,6 @@
 import webapp2
+import json
+# import predictor
 
 class Index(webapp2.RequestHandler):
     def get(self):
@@ -6,24 +8,32 @@ class Index(webapp2.RequestHandler):
         content = open('index.html').read()
         self.response.write(content)
 
-class PostLocation(webapp2.RequestHandler):
+class Predictor(webapp2.RequestHandler):
     def post(self):
-        data = self.request.get('data', None)
-        jsondata = json.loads(data)
-        Location(data=jsondata).put()
-        self.response.write('Success. Your location has been added to the database.')
+        self.response.headers['Content-Type'] = 'application/json; charset=UTF-8'
+        json_review = self.request.get('review', 'undefined')
+        raw_review = json.loads(json_review)
 
-class GetLocation(webapp2.RequestHandler):
-    def get(self):
-        self.response.headers['Content-Type'] = 'text/javascript'
-        location = Location.query().fetch()
-        content = [l.data for l in location]
-        self.response.write(content)
+        review = [
+            1, 1, 1, # TODO: fix this after it's fixed in loader
+        	# int(raw_review['reviewerID'], 36),
+        	# int(raw_review['asin'], 36),
+        	# loader.get_helpful_percentage(raw_review['helpful'],
+        	int(raw_review['overall']),
+        	raw_review['unixReviewTime'],
+        	raw_review['summary'],
+        	raw_review['reviewText']
+        ]
+
+        # train_X, train_Y, test_X, test_Y = loader.load([], True)
+        # classifier = trainer.naive_bayes(train_X, train_Y)
+        # prediction = classifier.predict([review])
+
+        self.response.write(json.dumps(review))
 
 sitemap = [
     ('/', Index),
-    ('/post', PostLocation),
-    ('/get', GetLocation)
+    ('/predict', Predictor)
 ]
 
 app = webapp2.WSGIApplication(sitemap, debug=True)
