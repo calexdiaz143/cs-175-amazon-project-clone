@@ -87,6 +87,7 @@ function autocomplete(n) {
 		}
 		else if (parseInt(helpful.value) != demoData.helpful[0]) {
 			helpful.value = demoData.helpful[0];
+			helpfulListener();
 		}
 		else if (parseInt(unhelpful.value) != demoData.helpful[1] - demoData.helpful[0]) {
 			unhelpful.value = demoData.helpful[1] - demoData.helpful[0];
@@ -97,23 +98,32 @@ function autocomplete(n) {
 	}
 }
 
+function numberListener(element) {
+	element.value = element.value.replace(/[^\d]/g, "");
+}
+
+function helpfulListener() {
+	numberListener(helpful);
+	if (helpful.value == 1) {
+		pluralHandler.innerHTML = "person";
+	}
+	else {
+		pluralHandler.innerHTML = "people";
+	}
+}
+
 function init() {
 	overall.addEventListener("click", function (e) {
 		var starsOffset = (5 - overall.dataset.rating) * 19;
 		var totalOffset = e.offsetX - starsOffset;
 		overall.dataset.rating = Math.floor(Math.min(Math.max(0, 1 + totalOffset / 19), 5));
 	});
-	helpful.addEventListener("input", function () {
-		helpful.value = helpful.value.replace(/[^\d]/g, "");
-		if (helpful.value == 1) {
-			pluralHandler.innerHTML = "person";
-		}
-		else {
-			pluralHandler.innerHTML = "people";
-		}
+	helpful.addEventListener("input", helpfulListener);
+	unhelpful.addEventListener("input", function () {
+		numberListener(unhelpful);
 	});
 	reviewTime.addEventListener("input", function () {
-		unixReviewTime.innerHTML = formatTimeForDB(reviewTime.value).unix;
+		unixReviewTime.innerHTML = formatTimeForDB(reviewTime.value).unixReviewTime;
 	});
 	var autocompleter = function () {
 		autocomplete(7);
@@ -132,14 +142,26 @@ function init() {
 	})
 	predict.addEventListener("click", function () {
 		var xhr = new XMLHttpRequest();
-		xhr.open("POST", "post", true);
+		xhr.open("POST", "predict", true);
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		xhr.onload = function () {
 			output.innerHTML = this.responseText;
 		};
 		xhr.onerror = function (e) {
 			console.log("Error: " + e);
 		};
-		xhr.send();
+		var time = formatTimeForDB(reviewTime.value);
+		xhr.send("review=" + JSON.stringify({
+			"reviewerID": reviewerID.value,
+			"asin": "0",
+			"reviewerName": reviewerName.value,
+			"helpful": [parseInt(helpful.value), parseInt(helpful.value) + parseInt(helpful.value)],
+			"reviewText": reviewText.value,
+			"overall": parseInt(overall.dataset.rating),
+			"summary": summary.value,
+			"unixReviewTime": time.unixReviewTime,
+			"reviewTime": time.reviewTime
+		}));
 	});
 }
 
