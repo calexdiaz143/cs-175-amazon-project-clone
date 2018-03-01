@@ -1,4 +1,5 @@
 import webapp2
+import urllib
 import json
 import pickle
 # import predictor
@@ -11,8 +12,9 @@ class Index(webapp2.RequestHandler):
 
 class Predictor(webapp2.RequestHandler):
     def post(self):
-        self.response.headers['Content-Type'] = 'application/json; charset=UTF-8'
-        json_review = self.request.get('review', 'undefined')
+        self.response.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        uri_review = self.request.get('review', 'undefined')
+        json_review = urllib.unquote(uri_review)
         raw_review = json.loads(json_review)
 
         review = [

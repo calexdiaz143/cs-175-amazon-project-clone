@@ -151,7 +151,7 @@ function init() {
 			console.log("Error: " + e);
 		};
 		var time = formatTimeForDB(reviewTime.value);
-		xhr.send("review=" + JSON.stringify({
+		xhr.send("review=" + encodeURIComponent(JSON.stringify({
 			"reviewerID": reviewerID.value,
 			"asin": "0",
 			"reviewerName": reviewerName.value,
@@ -161,7 +161,7 @@ function init() {
 			"summary": summary.value,
 			"unixReviewTime": time.unixReviewTime,
 			"reviewTime": time.reviewTime
-		}));
+		})));
 	});
 }
 
