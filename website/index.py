@@ -26,8 +26,7 @@ class Predictor(webapp2.RequestHandler):
         	raw_review['reviewText']
         ]
 
-        clf = pickle.load(open('root_copy/saved/clf.pkl', 'rb'))
-
+        # clf = pickle.load(open('root_copy/saved/clf.pkl', 'rb'))
 
         # train_X, train_Y, test_X, test_Y = loader.load([], True)
         # classifier = trainer.naive_bayes(train_X, train_Y)
