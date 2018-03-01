@@ -13,8 +13,8 @@ textarea, input {
 	font-family: inherit;
 	font-size: inherit;
 }
-textarea:invalid, input:invalid {
-	border: 1px solid #24303e;
+input:invalid, input:focus, textarea:invalid, textarea:focus {
+	background: #d1d9db;
 }
 
 img {

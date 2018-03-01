@@ -1,5 +1,6 @@
 import webapp2
 import json
+import pickle
 # import predictor
 
 class Index(webapp2.RequestHandler):
@@ -24,6 +25,9 @@ class Predictor(webapp2.RequestHandler):
         	raw_review['summary'],
         	raw_review['reviewText']
         ]
+
+        clf = pickle.load(open('root_copy/saved/clf.pkl', 'rb'))
+
 
         # train_X, train_Y, test_X, test_Y = loader.load([], True)
         # classifier = trainer.naive_bayes(train_X, train_Y)
