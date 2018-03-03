@@ -3,9 +3,9 @@ import trainer
 import tester
 
 CATEGORIES = [
-    "Books",                          # 8,898,041
-    "Electronics",                    # 1,689,188
-    "Movies_and_TV",                  # 1,697,533
+    # "Books",                          # 8,898,041
+    # "Electronics",                    # 1,689,188
+    # "Movies_and_TV",                  # 1,697,533
     # "CDs_and_Vinyl",                  # 1,097,592
     # "Clothing_Shoes_and_Jewelry",     # 278,677
     # "Home_and_Kitchen",               # 551,682
@@ -20,13 +20,13 @@ CATEGORIES = [
     # "Apps_for_Android",               # 752,937
     # "Office_Products",                # 53,258
     # "Pet_Supplies",                   # 157,836
-    # "Automotive",                     # 20,473
-    # "Grocery_and_Gourmet_Food",       # 151,254
-    # "Patio_Lawn_and_Garden",          # 13,272
-    # "Baby",                           # 160,792
-    # "Digital_Music",                  # 64,706
-    # "Musical_Instruments",            # 10,261
-    # "Amazon_Instant_Video"            # 37,126
+    "Automotive",                     # 20,473
+    "Grocery_and_Gourmet_Food",       # 151,254
+    "Patio_Lawn_and_Garden",          # 13,272
+    "Baby",                           # 160,792
+    "Digital_Music",                  # 64,706
+    "Musical_Instruments",            # 10,261
+    "Amazon_Instant_Video"            # 37,126
 ]
 
 if __name__ == '__main__':
