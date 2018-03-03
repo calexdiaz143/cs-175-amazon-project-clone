@@ -22,6 +22,7 @@ def parse_review(raw_review):
     ]
 
 def sparsify(train_corpus, test_corpus):
+    # TODO: ngrams
     countVectorizer = CountVectorizer(stop_words=stopwords.words('english'), min_df=5)
     train_text_counts = countVectorizer.fit_transform(train_corpus)
     test_text_counts = countVectorizer.transform(test_corpus)
