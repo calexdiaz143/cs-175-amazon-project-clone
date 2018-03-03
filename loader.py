@@ -5,7 +5,7 @@ import json
 import parser
 
 def get_category(path, percent):
-    json_reviews = open(path).read().split('\n')[:-1]
+    json_reviews = open(path).read().split('\n')[:500]#[:-1]
     reviews = []
     for json_review in json_reviews:
         raw_review = json.loads(json_review)
