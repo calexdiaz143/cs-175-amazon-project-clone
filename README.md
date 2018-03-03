@@ -10,4 +10,5 @@ A text-based machine learning thingy.
 [Project Presentation](https://docs.google.com/presentation/d/1fKKkVUE7hq4tzrj18FGuS0dxemu1tBUQI1z_azUvke8/edit)
 
 ## Apps
-[Website](https://amazonpredictor.appspot.com/)
+[Nonfunctional Website](https://amazonpredictor.appspot.com/)
+[Also Nonfunction Website, but will be functional soon](https://amazonpredictor.herokuapp.com/)
