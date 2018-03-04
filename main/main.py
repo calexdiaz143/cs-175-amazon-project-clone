@@ -58,7 +58,7 @@ def predict_django(review, classifier, summary_cv_path, review_cv_path): # exact
     from sklearn.feature_extraction.text import CountVectorizer
     import pickle
 
-    review = parser.parse_review(review)
+    review = main.parser.parse_review(review)
 
     summary_corpus = [review[5]]
     review_corpus = [review[6]]
@@ -73,9 +73,6 @@ def predict_django(review, classifier, summary_cv_path, review_cv_path): # exact
     final_features = hstack([csr_matrix(final_features, dtype=np.int64), summary_BOW, review_BOW])
 
     prediction = classifier.predict(final_features)
-    print(type(test_X))
-    print(type(final_features))
-    print(prediction)
 
 if __name__ == '__main__':
     import loader
