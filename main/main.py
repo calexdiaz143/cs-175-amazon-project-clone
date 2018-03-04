@@ -52,13 +52,9 @@ def predict(review, classifier, summary_cv_path, review_cv_path):
     print(prediction)
 
 def predict_django(review, classifier, summary_cv_path, review_cv_path): # exact same as above, but for the website
-    import main.parser, main.trainer, main.tester
     import numpy as np
-    from scipy.sparse import csr_matrix, hstack
-    from sklearn.feature_extraction.text import CountVectorizer
+    from scipy.sparse import csr_matrix
     import pickle
-
-    review = main.parser.parse_review(review)
 
     summary_corpus = [review[5]]
     review_corpus = [review[6]]
