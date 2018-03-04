@@ -51,7 +51,7 @@ def predict(review, classifier, summary_cv_path, review_cv_path):
     print(type(final_features))
     print(prediction)
 
-def predict(review, classifier, summary_cv_path, review_cv_path): # exact same as above, but for the website
+def predict_django(review, classifier, summary_cv_path, review_cv_path): # exact same as above, but for the website
     import main.parser, main.trainer, main.tester
     import numpy as np
     from scipy.sparse import csr_matrix, hstack

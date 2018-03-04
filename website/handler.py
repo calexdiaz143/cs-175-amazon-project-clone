@@ -14,7 +14,7 @@ def index(request):
         review = main.parser.parse_review(review)
 
         classifier = main.trainer.load('/app/main/static/clf_log')
-        prediction = main.main.predict(review, classifier, '/app/main/static/summary_cv.pkl', '/app/main/static/review_cv.pkl')
+        prediction = main.main.predict_django(review, classifier, '/app/main/static/summary_cv.pkl', '/app/main/static/review_cv.pkl')
 
         return HttpResponse(prediction)
     else:
