@@ -29,7 +29,7 @@ CATEGORIES = [
     "Amazon_Instant_Video"            # 37,126
 ]
 
-def predict(review, classifier):
+def predict(review, classifier, summary_cv_path, review_cv_path):
     import parser, trainer, tester
     import numpy as np
     from scipy.sparse import csr_matrix, hstack
@@ -42,10 +42,10 @@ def predict(review, classifier):
     review_corpus = [review[6]]
     final_features = [review[0:5]]
 
-    summary_cv = pickle.load(open('static/summary_cv.pkl', 'rb'))
+    summary_cv = pickle.load(open(summary_cv_path, 'rb'))
     summary_BOW = summary_cv.transform(summary_corpus)
 
-    review_cv = pickle.load(open('static/review_cv.pkl', 'rb'))
+    review_cv = pickle.load(open(review_cv_path, 'rb'))
     review_BOW = review_cv.transform(review_corpus)
 
     final_features = hstack([csr_matrix(final_features, dtype=np.int64), summary_BOW, review_BOW])
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     	"summary": "Highly useful - especially for drummers (and saxophonists)",
     	"unixReviewTime": 1370822400,
     	"reviewTime": "06 10, 2013"
-    }, classifier_logistic_regression)
+    }, classifier_logistic_regression, 'static/summary_cv.pkl', 'static/review_cv.pkl')
 
     # PREDICT A SINGLE CATEGORY
 
