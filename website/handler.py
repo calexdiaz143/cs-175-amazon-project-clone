@@ -14,7 +14,13 @@ def index(request):
         review = main.parser.parse_review(review)
 
         classifier = main.trainer.load('/app/main/static/clf_log')
+<<<<<<< HEAD
         prediction = main.main.predict(review, classifier, '/app/main/static/summary_cv.pkl', '/app/main/static/review_cv.pkl')
+=======
+        prediction = main.main.predict(review, classifier, '/app/main/static/summary_cv.pkl'
+'static/review_cv.pkl', '/app/main/static/summary_cv.pkl'
+'static/review_cv.pkl')
+>>>>>>> c6b9fdeaa69cd1bfea3c72338694206a3cb28c09
 
         return HttpResponse(prediction)
     else:
