@@ -1,7 +1,3 @@
-import loader
-import trainer
-import tester
-
 CATEGORIES = [
     "Books",                          # 8,898,041
     "Electronics",                    # 1,689,188
@@ -56,6 +52,10 @@ def predict(review, classifier, summary_cv_path, review_cv_path):
     print(prediction)
 
 if __name__ == '__main__':
+    import loader
+    import trainer
+    import tester
+
     train_X, train_Y, test_X, test_Y = loader.load(CATEGORIES, percent=0.75, cutoff=100, use_saved=False, overwrite_saved=False)
 
     # Option 1: train and save the classifers
