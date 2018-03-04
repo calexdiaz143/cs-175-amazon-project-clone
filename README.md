@@ -11,4 +11,4 @@ A text-based machine learning thingy.
 
 ## Apps
 [Nonfunctional Website](https://amazonpredictor.appspot.com/)  
-[Also Nonfunction Website, but will be functional soon](https://amazonpredictor.herokuapp.com/)
+[Semifunction Website](https://amazonpredictor.herokuapp.com/)
