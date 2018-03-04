@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import urllib.parse, json
-import main.parser, main.trainer
+import main.main, main.parser, main.trainer
 
 def index(request):
     if request.method == 'POST':
@@ -14,8 +14,7 @@ def index(request):
         review = main.parser.parse_review(review)
 
         classifier = main.trainer.load('/app/main/static/clf_log')
-        # prediction = predict(review, classifier)
-        prediction = json.dumps(review)
+        prediction = main.main.predict(review, classifier)
 
         return HttpResponse(prediction)
     else:
