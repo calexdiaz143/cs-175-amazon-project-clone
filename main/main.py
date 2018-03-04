@@ -47,9 +47,10 @@ def predict(review, classifier, summary_cv_path, review_cv_path):
     final_features = hstack([csr_matrix(final_features, dtype=np.int64), summary_BOW, review_BOW])
 
     prediction = classifier.predict(final_features)
-    print(type(test_X))
-    print(type(final_features))
-    print(prediction)
+    # print(type(test_X))
+    # print(type(final_features))
+    # print(prediction)
+    return prediction
 
 def predict_django(review, classifier, summary_cv_path, review_cv_path): # exact same as above, but for the website
     import numpy as np
@@ -69,6 +70,7 @@ def predict_django(review, classifier, summary_cv_path, review_cv_path): # exact
     final_features = hstack([csr_matrix(final_features, dtype=np.int64), summary_BOW, review_BOW])
 
     prediction = classifier.predict(final_features)
+    return prediction
 
 if __name__ == '__main__':
     import loader
@@ -88,7 +90,7 @@ if __name__ == '__main__':
 
     # PREDICT A SINGLE CATEGORY
 
-    predict({
+    prediction = predict({
     	"reviewerID": "A2NYK9KWFMJV4Y",
     	"asin": "B0002E5518",
     	"reviewerName": "Mike Tarrani \"Jazz Drummer\"",
@@ -99,6 +101,7 @@ if __name__ == '__main__':
     	"unixReviewTime": 1370822400,
     	"reviewTime": "06 10, 2013"
     }, classifier_logistic_regression, 'static/summary_cv.pkl', 'static/review_cv.pkl')
+    print(prediction)
 
     # PREDICT A SINGLE CATEGORY
 
