@@ -1,7 +1,3 @@
-import loader
-import trainer
-import tester
-
 CATEGORIES = [
     "Books",                          # 8,898,041
     "Electronics",                    # 1,689,188
@@ -55,7 +51,37 @@ def predict(review, classifier, summary_cv_path, review_cv_path):
     print(type(final_features))
     print(prediction)
 
+def predict(review, classifier, summary_cv_path, review_cv_path): # exact same as above, but for the website
+    import main.parser, main.trainer, main.tester
+    import numpy as np
+    from scipy.sparse import csr_matrix, hstack
+    from sklearn.feature_extraction.text import CountVectorizer
+    import pickle
+
+    review = parser.parse_review(review)
+
+    summary_corpus = [review[5]]
+    review_corpus = [review[6]]
+    final_features = [review[0:5]]
+
+    summary_cv = pickle.load(open(summary_cv_path, 'rb'))
+    summary_BOW = summary_cv.transform(summary_corpus)
+
+    review_cv = pickle.load(open(review_cv_path, 'rb'))
+    review_BOW = review_cv.transform(review_corpus)
+
+    final_features = hstack([csr_matrix(final_features, dtype=np.int64), summary_BOW, review_BOW])
+
+    prediction = classifier.predict(final_features)
+    print(type(test_X))
+    print(type(final_features))
+    print(prediction)
+
 if __name__ == '__main__':
+    import loader
+    import trainer
+    import tester
+
     train_X, train_Y, test_X, test_Y = loader.load(CATEGORIES, percent=0.75, cutoff=100, use_saved=False, overwrite_saved=False)
 
     # Option 1: train and save the classifers
