@@ -26,3 +26,4 @@ A text-based machine learning thingy.
       - (i.e. helpful minus unhelpful)
     - keep everything, and keep helpfulness as a feature
 - implement a hash vectorizer maybe
+- filter reviews by language
