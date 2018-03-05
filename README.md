@@ -28,3 +28,5 @@ A text-based machine learning thingy.
 - implement a hash vectorizer maybe
 - filter reviews by language
 - fix reviewerID (error b/c it's too large)
+- include reviewerName as a feature
+  - b/c e.g. there's a guy named (Mike Tarrani "Jazz Drummer")
