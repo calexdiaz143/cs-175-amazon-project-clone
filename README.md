@@ -22,8 +22,9 @@ A text-based machine learning thingy.
     - set helpful=[x,y] to x/y
     - throw out anything under 0.5
   - proposed:
-    - set helpful=[x,y] to x-(y-x)
-      - (i.e. helpful minus unhelpful)
+    - set helpful=[x,y] to log(x-(y-x))
+      - (i.e. logarithm of helpful minus unhelpful)
     - keep everything, and keep helpfulness as a feature
 - implement a hash vectorizer maybe
 - filter reviews by language
+- fix reviewerID (error b/c it's too large)
