@@ -1,4 +1,4 @@
-var csrfmiddlewaretoken = document.getElementById("csrfmiddlewaretoken");
+var csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0];
 var reviewerName = document.getElementById("name");
 var reviewerID = document.getElementById("id");
 var overall = document.getElementById("overall");
