@@ -15,6 +15,7 @@
 				<h1>Amazon Category Predictor</h1>
 				<div class="divider"></div>
 				<div id="review">
+					{% csrf_token %}
 					<div class="flex">
 						<img alt="default" src="{% static 'default.png' %}" id="image">
 						<div>

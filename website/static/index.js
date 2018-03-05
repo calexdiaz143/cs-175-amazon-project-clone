@@ -1,3 +1,4 @@
+var csrfmiddlewaretoken = document.getElementById("csrfmiddlewaretoken");
 var reviewerName = document.getElementById("name");
 var reviewerID = document.getElementById("id");
 var overall = document.getElementById("overall");
@@ -112,15 +113,6 @@ function helpfulListener() {
 	}
 }
 
-function getCookie(name) {
-	var value = "; " + document.cookie;
-	var parts = value.split("; " + name + "=");
-	if (parts.length == 2) {
-		return parts.pop().split(";").shift();
-	}
-	return "";
-}
-
 function init() {
 	overall.addEventListener("click", function (e) {
 		var starsOffset = (5 - overall.dataset.rating) * 19;
@@ -153,7 +145,7 @@ function init() {
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", location, true);
 		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+		xhr.setRequestHeader("X-CSRFToken", csrfmiddlewaretoken.value);
 		xhr.onload = function () {
 			output.innerHTML = this.responseText;
 		};
