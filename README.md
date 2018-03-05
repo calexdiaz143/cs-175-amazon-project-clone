@@ -11,4 +11,18 @@ A text-based machine learning thingy.
 
 ## Apps
 [Nonfunctional Website](https://amazonpredictor.appspot.com/)  
-[Semifunction Website](https://amazonpredictor.herokuapp.com/)
+[Functional Website](https://amazonpredictor.herokuapp.com/)
+
+## TODO
+- implement the tf-idf vectorizer
+- something about n-grams
+- change our method of parsing helpfulness
+  - current:
+    - set helpful=[0,0] to 0.5
+    - set helpful=[x,y] to x/y
+    - throw out anything under 0.5
+  - proposed:
+    - set helpful=[x,y] to x-(y-x)
+      - (i.e. helpful minus unhelpful)
+    - keep everything, and keep helpfulness as a feature
+- implement a hash vectorizer maybe
