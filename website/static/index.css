@@ -134,8 +134,14 @@ button:hover {
 }
 
 #output {
-	background: black;
-	color: white;
+	background: #000000;
+	color: #ffffff;
 	margin: 10px;
 	border-radius: 4px;
+}
+
+.predicted {
+	background: #00ff00;
+	color: #000000;
+	font-weight: bold;
 }
