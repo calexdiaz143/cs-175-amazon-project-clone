@@ -30,3 +30,5 @@ A text-based machine learning thingy.
 - fix reviewerID (error b/c it's too large)
 - include reviewerName as a feature
   - b/c e.g. there's a guy named (Mike Tarrani "Jazz Drummer")
+- add a predict_train function to detect overfitting
+- maybe include some other classifiers or RNN
