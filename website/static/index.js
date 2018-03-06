@@ -160,7 +160,7 @@ function autocomplete(n) {
 /* Event Listeners */
 
 function reviewerIDListener() {
-	reviewerID.value = reviewerID.value.toUpperCase().slice(0, 14);
+	reviewerID.value = reviewerID.value.toUpperCase();//.slice(0, 13); // commented just in case it causes demo problems
 }
 
 function overallListener(mouse) {
