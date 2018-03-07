@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import urllib.parse, json
-import main.main, main.parser, main.trainer
+import main.memo, main.loader, main.parser
 
 def index(request):
     if request.method == 'POST':
