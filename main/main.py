@@ -33,7 +33,7 @@ if __name__ == '__main__':
     #     OVERWRITE_SAVED,
     #     whatever_is_necessary_in_case_LOAD_SAVED_is_False
     # )
-    train_X, train_Y, test_X, test_Y, summary_CV, review_CV = memo.get_data(False, True, CATEGORIES, 0.75, 100)
+    train_X, train_Y, test_X, test_Y, summary_cv, review_cv = memo.get_data(False, True, CATEGORIES, 0.75, 1000)
     clf_nb = memo.get_classifier(False, True, trainer.naive_bayes, train_X, train_Y, 'clf_nb')
     clf_lr = memo.get_classifier(False, True, trainer.logistic_regression, train_X, train_Y, 'clf_lr')
     clf_svm = memo.get_classifier(False, True, trainer.svm, train_X, train_Y, 'clf_svm')
