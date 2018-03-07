@@ -3,56 +3,42 @@ from sklearn.feature_extraction.text import CountVectorizer
 from scipy.sparse import csr_matrix, hstack
 from nltk.corpus import stopwords
 import numpy as np
-import pickle
 
-def get_helpful_percentage(ratio):
-    if(ratio[1] == 0):
-        return 50
-    return int(100 * ratio[0] / ratio[1])
-
-def parse_review(raw_review):
-    return [
-        1, 1, # TODO: figure out how to reduce the size of int(x, 36)
-        # int(raw_review['reviewerID'], 36),
-        # int(raw_review['asin'], 36),
-        get_helpful_percentage(raw_review['helpful']),
-        int(raw_review['overall']),
-        raw_review['unixReviewTime'],
-        raw_review['summary'],
-        raw_review['reviewText']
-    ]
-
-def sparsify(train_corpus, test_corpus, path):
+def sparsify(train_corpus, test_corpus):
+    ''' Transform corpora. '''
     # TODO: ngrams
     countVectorizer = CountVectorizer(stop_words=stopwords.words('english'), min_df=5)
     train_text_counts = countVectorizer.fit_transform(train_corpus)
-
-    file = open(path + '.pkl', 'wb')
-    pickle.dump(countVectorizer, file)
-
     test_text_counts = countVectorizer.transform(test_corpus)
-    # add tf-idf feature later on
-    return train_text_counts, test_text_counts
+    # add tf-idf features later on
+    return train_text_counts, test_text_counts, countVectorizer
 
-def parse_BOW(train_features, test_features):
-    train_summary_corpus = []
-    train_review_corpus = []
-    train_final_features = []
-    for i, feature in enumerate(train_features):
-        train_summary_corpus.append(feature[5])
-        train_review_corpus.append(feature[6])
-        train_final_features.append(feature[0:5])
+def separate_features(X):
+    ''' Separate textual features from other features. '''
+    summary = []
+    review = []
+    other = []
+    for features in X:
+        summary.append(features[0])
+        review.append(features[1])
+        other.append(features[2:])
+    return summary, review, other
 
-    test_summary_corpus = []
-    test_review_corpus = []
-    test_final_features = []
-    for i, feature in enumerate(test_features):
-        test_summary_corpus.append(feature[5])
-        test_review_corpus.append(feature[6])
-        test_final_features.append(feature[0:5])
+def fit_transform(train_X, test_X):
+    ''' Fit and transform textual features into BOWs so classifiers can handle them. '''
+    train_X_summary, train_X_review, train_X_other = separate_features(train_X)
+    test_X_summary, test_X_review, test_X_other = separate_features(test_X)
 
-    train_summary_BOW, test_summary_BOW = sparsify(train_summary_corpus, test_summary_corpus, 'static/summary_cv')
-    train_review_BOW, test_review_BOW = sparsify(train_review_corpus, test_review_corpus, 'static/review_cv')
-    train_final_features = hstack([csr_matrix(train_final_features, dtype=np.int64), train_summary_BOW, train_review_BOW])
-    test_final_features = hstack([csr_matrix(test_final_features, dtype=np.int64), test_summary_BOW, test_review_BOW])
-    return train_final_features, test_final_features
+    train_X_summary_BOW, test_X_summary_BOW, summary_vectorizer = sparsify(train_X_summary, test_X_summary)
+    train_X_review_BOW, test_X_review_BOW, review_vectorizer = sparsify(train_X_review, test_X_review)
+
+    train_X_final = hstack([train_X_summary_BOW, train_X_review_BOW, csr_matrix(train_X_other, dtype=np.int64)])
+    test_X_final = hstack([test_X_summary_BOW, test_X_review_BOW, csr_matrix(test_X_other, dtype=np.int64)])
+    return train_X_final, test_X_final, summary_vectorizer, review_vectorizer
+
+def transform(X, summary_vectorizer, review_vectorizer):
+    ''' Transform textual features into BOWs so classifiers can handle them. '''
+    X_summary, X_review, X_other = separate_features(X)
+    X_summary_BOW = summary_vectorizer.transform(X_summary)
+    X_review_BOW = review_vectorizer.transform(X_review)
+    return hstack([X_summary_BOW, X_review_BOW, csr_matrix(X_other, dtype=np.int64)])

@@ -1,3 +1,5 @@
+import memo, trainer, tester
+
 CATEGORIES = [
     "Books",                          # 8,898,041
     "Electronics",                    # 1,689,188
@@ -25,101 +27,28 @@ CATEGORIES = [
     "Amazon_Instant_Video"            # 37,126
 ]
 
-def predict(review, classifier, summary_cv_path, review_cv_path):
-    import parser, trainer, tester
-    import numpy as np
-    from scipy.sparse import csr_matrix, hstack
-    from sklearn.feature_extraction.text import CountVectorizer
-    import pickle
-
-    review = parser.parse_review(review)
-
-    summary_corpus = [review[5]]
-    review_corpus = [review[6]]
-    final_features = [review[0:5]]
-
-    summary_cv = pickle.load(open(summary_cv_path, 'rb'))
-    summary_BOW = summary_cv.transform(summary_corpus)
-
-    review_cv = pickle.load(open(review_cv_path, 'rb'))
-    review_BOW = review_cv.transform(review_corpus)
-
-    final_features = hstack([csr_matrix(final_features, dtype=np.int64), summary_BOW, review_BOW])
-
-    prediction = classifier.predict(final_features)
-    # print(type(test_X))
-    # print(type(final_features))
-    # print(prediction)
-    return prediction
-
-def predict_django(review, classifier, summary_cv_path, review_cv_path): # exact same as above, but for the website
-    import numpy as np
-    from scipy.sparse import csr_matrix, hstack
-    import pickle
-
-    summary_corpus = [review[5]]
-    review_corpus = [review[6]]
-    final_features = [review[0:5]]
-
-    summary_cv = pickle.load(open(summary_cv_path, 'rb'))
-    summary_BOW = summary_cv.transform(summary_corpus)
-
-    review_cv = pickle.load(open(review_cv_path, 'rb'))
-    review_BOW = review_cv.transform(review_corpus)
-
-    final_features = hstack([csr_matrix(final_features, dtype=np.int64), summary_BOW, review_BOW])
-
-    prediction = classifier.predict(final_features)
-    return prediction
-
 if __name__ == '__main__':
-    import loader
-    import trainer
-    import tester
+    # for all memo.get() functions, the first two parameters are (LOAD_SAVED, OVERWRITE_SAVED)
+    # hopefully those names are self-explanatory
+    train_X, train_Y, test_X, test_Y, summary_CV, review_CV = memo.get_data(True, False, CATEGORIES, 0.75, 100)
+    clf_NB = memo.get_classifier(True, False, trainer.naive_bayes, train_X, train_Y, 'clf_NB')
+    clf_LR = memo.get_classifier(True, False, trainer.logistic_regression, train_X, train_Y, 'clf_LR')
+    clf_SVM = memo.get_classifier(True, False, trainer.svm, train_X, train_Y, 'clf_SVM')
 
-    train_X, train_Y, test_X, test_Y = loader.load(CATEGORIES, percent=0.75, cutoff=100, use_saved=False, overwrite_saved=False)
+    prd_NB = clf_NB.predict(test_X)
+    prd_LR = clf_LR.predict(test_X)
+    prd_SVM = clf_SVM.predict(test_X)
 
-    # Option 1: train and save the classifers
-    classifier_naive_bayes = trainer.naive_bayes(train_X, train_Y)
-    classifier_logistic_regression = trainer.logistic_regression(train_X, train_Y)
-    classifier_svm = trainer.svm(train_X, train_Y)
+    err_NB = tester.error_ratio(test_Y, prd_NB)
+    err_LR = tester.error_ratio(test_Y, prd_LR)
+    err_SVM = tester.error_ratio(test_Y, prd_SVM)
 
-    trainer.save(classifier_naive_bayes, "static/clf_nb")
-    trainer.save(classifier_logistic_regression, "static/clf_log")
-    trainer.save(classifier_svm, "static/clf_svm")
+    print(err_NB)
+    print(err_LR)
+    print(err_SVM)
 
-    # PREDICT A SINGLE CATEGORY
+    predictions = [prd_NB, prd_LR, prd_SVM]
+    prd_E = tester.predict_ensemble(test_X, predictions)
+    err_E = tester.error_ratio(test_Y, prd_E)
 
-    prediction = predict({
-    	"reviewerID": "A2NYK9KWFMJV4Y",
-    	"asin": "B0002E5518",
-    	"reviewerName": "Mike Tarrani \"Jazz Drummer\"",
-    	"helpful": [1, 1],
-    	"reviewText": "One thing I love about this extension bar is it will fit over the relatively large diameter down tubes on my hi-hat stands. I use anOn Stage Microphone 13-inch Gooseneckto connect to the bar, then I attach either aNady DM70 Drum and Instrument Microphoneor DM80 microphone. The bar-gooseneck arrangement is sturdy enough for that mic model.This also works well for mounting on microphone stands. I use it and a shorter gooseneck to mount the DM70 for tenor and alto saxophones, or a DM80 for baritones. Again, it works perfectly for my situations.I always keep a few of these, plus various size goosenecks, just in case I need to mount an additional microphone and I am short on stands. It's one more tool to make set up less stressful.Trust me, when you need one (and chances are you will if you're a drummer or a sound tech) you will thank yourself for having the foresight to purchase it for situations I cited above and those that I have not foreseen.",
-    	"overall": 5.0,
-    	"summary": "Highly useful - especially for drummers (and saxophonists)",
-    	"unixReviewTime": 1370822400,
-    	"reviewTime": "06 10, 2013"
-    }, classifier_logistic_regression, 'static/summary_cv.pkl', 'static/review_cv.pkl')
-    print(prediction)
-
-    # PREDICT A SINGLE CATEGORY
-
-    # Option 2: just load the saved classifiers
-    # classifier_naive_bayes = trainer.load('clf_nb')
-    # classifier_logistic_regression = trainer.load('clf_log')
-    # classifier_svm = trainer.load('clf_svm')
-
-    tester.predict_error(test_X, test_Y, classifier_naive_bayes)
-    tester.predict_error(test_X, test_Y, classifier_logistic_regression)
-    tester.predict_error(test_X, test_Y, classifier_svm)
-
-    # TODO: save the predictions above to use in the ensemble below, maybe, idk
-
-    classifiers = [
-        classifier_naive_bayes,
-        classifier_logistic_regression,
-        classifier_svm
-    ]
-    predictions = tester.predict_ensemble(test_X, classifiers)
-    tester.error_ratio(predictions, test_Y)
+    print(err_E)

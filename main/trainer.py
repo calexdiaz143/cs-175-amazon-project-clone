@@ -14,11 +14,3 @@ def logistic_regression(X, Y):
 def svm(X, Y):
     classifier = SVC().fit(X, Y)
     return classifier
-
-def save(classifier, path):
-    file = open(path + '.pkl', 'wb')
-    pickle.dump(classifier, file)
-
-def load(path):
-    classifier = pickle.load(open(path + '.pkl', 'rb'))
-    return classifier

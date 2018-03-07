@@ -1,15 +1,30 @@
-from scipy.sparse import save_npz, load_npz
 from random import shuffle
 import numpy as np
 import json
-import parser
 
-def get_category(path, percent, cutoff=-1):
+def get_helpful_percentage(ratio): #TODO: change this, and maybe put this back in parse_review
+    if(ratio[1] == 0):
+        return 50
+    return int(100 * ratio[0] / ratio[1])
+
+def parse_review(raw_review): # TODO: maybe put this back in get_category
+    return [
+        raw_review['summary'],
+        raw_review['reviewText'],
+        1, 1, # TODO: figure out how to reduce the size of int(x, 36)
+        # int(raw_review['reviewerID'], 36),
+        # int(raw_review['asin'], 36),
+        get_helpful_percentage(raw_review['helpful']),
+        int(raw_review['overall']),
+        raw_review['unixReviewTime']
+    ]
+
+def load_category(path, percent, cutoff):
     content = open(path)
     reviews = []
     for json_review in content.readlines():
         raw_review = json.loads(json_review)
-        review = parser.parse_review(raw_review)
+        review = parse_review(raw_review)
         if review[2] >= 0.5:
             reviews.append(review)
 
@@ -24,13 +39,13 @@ def get_category(path, percent, cutoff=-1):
     test = np.array(reviews[split_index:])
     return train, test
 
-def get_categories(categories, percent, cutoff=-1):
+def load_categories(categories, percent, cutoff):
     train_reviews = []
     train_categories = []
     test_reviews = []
     test_categories = []
     for category in categories:
-        train, test = get_category('db/reviews_' + category + '_5.json', percent, cutoff)
+        train, test = load_category('db/reviews_' + category + '_5.json', percent, cutoff)
         train_reviews.append(train)
         train_categories.append([category] * train.shape[0])
         test_reviews.append(test)
@@ -48,22 +63,3 @@ def get_categories(categories, percent, cutoff=-1):
     train_reviews, train_categories = zip(*train_all)
     test_reviews, test_categories = zip(*test_all)
     return train_reviews, np.array(train_categories), test_reviews, np.array(test_categories)
-
-def save(train_X, train_Y, test_X, test_Y):
-    save_npz('static/train_X', train_X)
-    np.save('static/train_Y', train_Y)
-    save_npz('static/test_X', test_X)
-    np.save('static/test_Y', train_Y)
-
-def load(categories, percent=0.75, cutoff=-1, use_saved=False, overwrite_saved=True):
-    if use_saved:
-        train_X = load_npz('static/train_X.npz')
-        train_Y = np.load('static/train_Y.npy')
-        test_X = load_npz('static/test_X.npz')
-        test_Y = np.load('static/test_Y.npy')
-    else:
-        train_X, train_Y, test_X, test_Y = get_categories(categories, percent, cutoff)
-        train_X, test_X = parser.parse_BOW(train_X, test_X)
-        if overwrite_saved:
-            save(train_X, train_Y, test_X, test_Y)
-    return train_X, train_Y, test_X, test_Y

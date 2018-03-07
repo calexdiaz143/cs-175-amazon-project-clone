@@ -7,14 +7,18 @@ def index(request):
     if request.method == 'POST':
         uri_review = request.POST.get('review', '{}')
         json_review = urllib.parse.unquote(uri_review)
-        review = json.loads(json_review)
 
+        review = json.loads(json_review)
         if review['helpful'][0] == None or review['helpful'][1] == None:
             review['helpful'] = [0, 0]
-        review = main.parser.parse_review(review)
+        raw_review = main.loader.parse_review(review)
 
-        classifier = main.trainer.load('/app/main/static/clf_log')
-        prediction = main.main.predict_django(review, classifier, '/app/main/static/summary_cv.pkl', '/app/main/static/review_cv.pkl')
+        summary_CV = main.memo.load_pkl('/app/main/static/summary_CV')
+        review_CV = main.memo.load_pkl('/app/main/static/review_CV')
+        review = main.parser.transform(raw_review, summary_CV, review_CV)
+
+        clf_LR = main.memo.load_pkl('/app/main/static/clf_LR')
+        prediction = clf_LR.predict(review)
 
         return HttpResponse(prediction)
     else:
