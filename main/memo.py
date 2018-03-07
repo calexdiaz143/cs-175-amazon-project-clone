@@ -44,5 +44,5 @@ def get_classifier(load_saved, overwrite_saved, classifier, train_X, train_Y, na
         return load_pkl(root + name)
     clf = classifier(train_X, train_Y)
     if overwrite_saved:
-        save_pkl(root + name, classifier)
+        save_pkl(root + name, clf)
     return clf
