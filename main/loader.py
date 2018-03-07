@@ -25,7 +25,7 @@ def load_category(path, percent, cutoff):
     for json_review in content.readlines():
         raw_review = json.loads(json_review)
         review = parse_review(raw_review)
-        if review[2] >= 0.5:
+        if review[4] >= 0.5:
             reviews.append(review)
 
         if cutoff == 0:

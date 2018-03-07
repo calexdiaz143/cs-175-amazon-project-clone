@@ -30,7 +30,7 @@ CATEGORIES = [
 if __name__ == '__main__':
     # load data and train classifiers
     LOAD_SAVED = True
-    OVERWRITE_SAVED = True
+    OVERWRITE_SAVED = False
     train_X, train_Y, test_X, test_Y, summary_cv, review_cv = memo.get_data(LOAD_SAVED, OVERWRITE_SAVED, CATEGORIES, 0.75, 1000)
     clf_nb = memo.get_classifier(LOAD_SAVED, OVERWRITE_SAVED, trainer.naive_bayes, train_X, train_Y, 'clf_nb')
     clf_lr = memo.get_classifier(LOAD_SAVED, OVERWRITE_SAVED, trainer.logistic_regression, train_X, train_Y, 'clf_lr')
@@ -70,6 +70,6 @@ if __name__ == '__main__':
 
     predictions = [prd_nb, prd_lr, prd_svm]
     prd_ensemble = tester.predict_ensemble(train_X, predictions)
-    err_ensemble = tester.error_ratio(test_Y, prd_ensemble)
+    err_ensemble = tester.error_ratio(train_Y, prd_ensemble)
 
     print(err_ensemble)
