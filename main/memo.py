@@ -25,13 +25,13 @@ def save_data(train_X, train_Y, test_X, test_Y, summary_cv, review_cv, root=MEMO
     save_npz(root + 'train_X', train_X)
     np.save(root + 'train_Y', train_Y)
     save_npz(root + 'test_X', test_X)
-    np.save(root + 'test_Y', train_Y)
+    np.save(root + 'test_Y', test_Y)
     save_pkl(root + 'summary_cv', summary_cv)
     save_pkl(root + 'review_cv', review_cv)
 
-def get_data(load_saved, overwrite_saved, categories, percent, cutoff):
+def get_data(load_saved, overwrite_saved, categories, percent, cutoff, root=MEMO_ROOT):
     if load_saved:
-        return load_data()
+        return load_data(root)
     import loader, parser
     train_X, train_Y, test_X, test_Y = loader.load_categories(categories, percent, cutoff)
     train_X, test_X, summary_cv, review_cv = parser.fit_transform(train_X, test_X)
