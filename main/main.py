@@ -28,16 +28,15 @@ CATEGORIES = [
 ]
 
 if __name__ == '__main__':
-    # memo.get_whatever(
-    #     LOAD_SAVED,
-    #     OVERWRITE_SAVED,
-    #     whatever_is_necessary_in_case_LOAD_SAVED_is_False
-    # )
-    train_X, train_Y, test_X, test_Y, summary_cv, review_cv = memo.get_data(False, True, CATEGORIES, 0.75, 1000)
-    clf_nb = memo.get_classifier(False, True, trainer.naive_bayes, train_X, train_Y, 'clf_nb')
-    clf_lr = memo.get_classifier(False, True, trainer.logistic_regression, train_X, train_Y, 'clf_lr')
-    clf_svm = memo.get_classifier(False, True, trainer.svm, train_X, train_Y, 'clf_svm')
+    # load data and train classifiers
+    LOAD_SAVED = True
+    OVERWRITE_SAVED = True
+    train_X, train_Y, test_X, test_Y, summary_cv, review_cv = memo.get_data(LOAD_SAVED, OVERWRITE_SAVED, CATEGORIES, 0.75, 1000)
+    clf_nb = memo.get_classifier(LOAD_SAVED, OVERWRITE_SAVED, trainer.naive_bayes, train_X, train_Y, 'clf_nb')
+    clf_lr = memo.get_classifier(LOAD_SAVED, OVERWRITE_SAVED, trainer.logistic_regression, train_X, train_Y, 'clf_lr')
+    clf_svm = memo.get_classifier(LOAD_SAVED, OVERWRITE_SAVED, trainer.svm, train_X, train_Y, 'clf_svm')
 
+    # get error rate
     prd_nb = clf_nb.predict(test_X)
     prd_lr = clf_lr.predict(test_X)
     prd_svm = clf_svm.predict(test_X)
@@ -52,6 +51,25 @@ if __name__ == '__main__':
 
     predictions = [prd_nb, prd_lr, prd_svm]
     prd_ensemble = tester.predict_ensemble(test_X, predictions)
+    err_ensemble = tester.error_ratio(test_Y, prd_ensemble)
+
+    print(err_ensemble)
+
+    # check for overfitting
+    prd_nb = clf_nb.predict(train_X)
+    prd_lr = clf_lr.predict(train_X)
+    prd_svm = clf_svm.predict(train_X)
+
+    err_nb = tester.error_ratio(train_Y, prd_nb)
+    err_lr = tester.error_ratio(train_Y, prd_lr)
+    err_svm = tester.error_ratio(train_Y, prd_svm)
+
+    print(err_nb)
+    print(err_lr)
+    print(err_svm)
+
+    predictions = [prd_nb, prd_lr, prd_svm]
+    prd_ensemble = tester.predict_ensemble(train_X, predictions)
     err_ensemble = tester.error_ratio(test_Y, prd_ensemble)
 
     print(err_ensemble)
