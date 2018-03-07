@@ -34,24 +34,24 @@ if __name__ == '__main__':
     #     whatever_is_necessary_in_case_LOAD_SAVED_is_False
     # )
     train_X, train_Y, test_X, test_Y, summary_CV, review_CV = memo.get_data(False, True, CATEGORIES, 0.75, 100)
-    clf_NB = memo.get_classifier(False, True, trainer.naive_bayes, train_X, train_Y, 'clf_NB')
-    clf_LR = memo.get_classifier(False, True, trainer.logistic_regression, train_X, train_Y, 'clf_LR')
-    clf_SVM = memo.get_classifier(False, True, trainer.svm, train_X, train_Y, 'clf_SVM')
+    clf_nb = memo.get_classifier(False, True, trainer.naive_bayes, train_X, train_Y, 'clf_nb')
+    clf_lr = memo.get_classifier(False, True, trainer.logistic_regression, train_X, train_Y, 'clf_lr')
+    clf_svm = memo.get_classifier(False, True, trainer.svm, train_X, train_Y, 'clf_svm')
 
-    prd_NB = clf_NB.predict(test_X)
-    prd_LR = clf_LR.predict(test_X)
-    prd_SVM = clf_SVM.predict(test_X)
+    prd_nb = clf_nb.predict(test_X)
+    prd_lr = clf_lr.predict(test_X)
+    prd_svm = clf_svm.predict(test_X)
 
-    err_NB = tester.error_ratio(test_Y, prd_NB)
-    err_LR = tester.error_ratio(test_Y, prd_LR)
-    err_SVM = tester.error_ratio(test_Y, prd_SVM)
+    err_nb = tester.error_ratio(test_Y, prd_nb)
+    err_lr = tester.error_ratio(test_Y, prd_lr)
+    err_svm = tester.error_ratio(test_Y, prd_svm)
 
-    print(err_NB)
-    print(err_LR)
-    print(err_SVM)
+    print(err_nb)
+    print(err_lr)
+    print(err_svm)
 
-    predictions = [prd_NB, prd_LR, prd_SVM]
-    prd_E = tester.predict_ensemble(test_X, predictions)
-    err_E = tester.error_ratio(test_Y, prd_E)
+    predictions = [prd_nb, prd_lr, prd_svm]
+    prd_ensemble = tester.predict_ensemble(test_X, predictions)
+    err_ensemble = tester.error_ratio(test_Y, prd_ensemble)
 
-    print(err_E)
+    print(err_ensemble)
