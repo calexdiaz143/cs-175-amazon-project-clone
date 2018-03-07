@@ -28,12 +28,15 @@ CATEGORIES = [
 ]
 
 if __name__ == '__main__':
-    # for all memo.get() functions, the first two parameters are (LOAD_SAVED, OVERWRITE_SAVED)
-    # hopefully those names are self-explanatory
-    train_X, train_Y, test_X, test_Y, summary_CV, review_CV = memo.get_data(True, False, CATEGORIES, 0.75, 100)
-    clf_NB = memo.get_classifier(True, False, trainer.naive_bayes, train_X, train_Y, 'clf_NB')
-    clf_LR = memo.get_classifier(True, False, trainer.logistic_regression, train_X, train_Y, 'clf_LR')
-    clf_SVM = memo.get_classifier(True, False, trainer.svm, train_X, train_Y, 'clf_SVM')
+    # memo.get_whatever(
+    #     LOAD_SAVED,
+    #     OVERWRITE_SAVED,
+    #     whatever_is_necessary_in_case_LOAD_SAVED_is_False
+    # )
+    train_X, train_Y, test_X, test_Y, summary_CV, review_CV = memo.get_data(False, True, CATEGORIES, 0.75, 100)
+    clf_NB = memo.get_classifier(False, True, trainer.naive_bayes, train_X, train_Y, 'clf_NB')
+    clf_LR = memo.get_classifier(False, True, trainer.logistic_regression, train_X, train_Y, 'clf_LR')
+    clf_SVM = memo.get_classifier(False, True, trainer.svm, train_X, train_Y, 'clf_SVM')
 
     prd_NB = clf_NB.predict(test_X)
     prd_LR = clf_LR.predict(test_X)
