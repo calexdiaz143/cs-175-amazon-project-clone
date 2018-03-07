@@ -15,7 +15,7 @@ def index(request):
 
         summary_CV = main.memo.load_pkl('/app/main/static/summary_cv')
         review_CV = main.memo.load_pkl('/app/main/static/review_cv')
-        review = main.parser.transform(raw_review, summary_CV, review_CV)
+        review = main.parser.transform([raw_review], summary_CV, review_CV)
 
         clf_LR = main.memo.load_pkl('/app/main/static/clf_lr')
         prediction = clf_LR.predict(review)
