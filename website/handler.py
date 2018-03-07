@@ -13,11 +13,11 @@ def index(request):
             review['helpful'] = [0, 0]
         raw_review = main.loader.parse_review(review)
 
-        summary_CV = main.memo.load_pkl('/app/main/static/summary_cv')
-        review_CV = main.memo.load_pkl('/app/main/static/review_cv')
+        summary_CV = main.memo.load_pkl('main/static/summary_cv')
+        review_CV = main.memo.load_pkl('main/static/review_cv')
         review = main.parser.transform([raw_review], summary_CV, review_CV)
 
-        clf_LR = main.memo.load_pkl('/app/main/static/clf_lr')
+        clf_LR = main.memo.load_pkl('main/static/clf_lr')
         prediction = clf_LR.predict(review)
 
         return HttpResponse(prediction)
