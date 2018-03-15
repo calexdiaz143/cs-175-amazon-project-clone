@@ -37,39 +37,42 @@ if __name__ == '__main__':
     clf_svm = memo.get_classifier(LOAD_SAVED, OVERWRITE_SAVED, trainer.svm, train_X, train_Y, 'clf_svm')
 
     # get error rate
-    prd_nb = clf_nb.predict(test_X)
-    prd_lr = clf_lr.predict(test_X)
-    prd_svm = clf_svm.predict(test_X)
+    test_prd_nb = clf_nb.predict(test_X)
+    test_prd_lr = clf_lr.predict(test_X)
+    test_prd_svm = clf_svm.predict(test_X)
 
-    err_nb = tester.error_ratio(test_Y, prd_nb)
-    err_lr = tester.error_ratio(test_Y, prd_lr)
-    err_svm = tester.error_ratio(test_Y, prd_svm)
+    test_err_nb = tester.error_ratio(test_Y, test_prd_nb)
+    test_err_lr = tester.error_ratio(test_Y, test_prd_lr)
+    test_err_svm = tester.error_ratio(test_Y, test_prd_svm)
 
-    print(err_nb)
-    print(err_lr)
-    print(err_svm)
-
-    predictions = [prd_nb, prd_lr, prd_svm]
-    prd_ensemble = tester.predict_ensemble(test_X, predictions)
-    err_ensemble = tester.error_ratio(test_Y, prd_ensemble)
-
-    print(err_ensemble)
+    test_predictions = [test_prd_nb, test_prd_lr, test_prd_svm]
+    test_prd_ensemble = tester.predict_ensemble(test_X, test_predictions)
+    test_err_ensemble = tester.error_ratio(test_Y, test_prd_ensemble)
 
     # check for overfitting
-    prd_nb = clf_nb.predict(train_X)
-    prd_lr = clf_lr.predict(train_X)
-    prd_svm = clf_svm.predict(train_X)
+    train_prd_nb = clf_nb.predict(train_X)
+    train_prd_lr = clf_lr.predict(train_X)
+    train_prd_svm = clf_svm.predict(train_X)
 
-    err_nb = tester.error_ratio(train_Y, prd_nb)
-    err_lr = tester.error_ratio(train_Y, prd_lr)
-    err_svm = tester.error_ratio(train_Y, prd_svm)
+    train_err_nb = tester.error_ratio(train_Y, train_prd_nb)
+    train_err_lr = tester.error_ratio(train_Y, train_prd_lr)
+    train_err_svm = tester.error_ratio(train_Y, train_prd_svm)
 
-    print(err_nb)
-    print(err_lr)
-    print(err_svm)
+    train_predictions = [train_prd_nb, train_prd_lr, train_prd_svm]
+    train_prd_ensemble = tester.predict_ensemble(train_X, train_predictions)
+    train_err_ensemble = tester.error_ratio(train_Y, train_prd_ensemble)
 
-    predictions = [prd_nb, prd_lr, prd_svm]
-    prd_ensemble = tester.predict_ensemble(train_X, predictions)
-    err_ensemble = tester.error_ratio(train_Y, prd_ensemble)
+    memo.save_txt('static/error', '''
+    Test Error NB : {:10.6f}
+    Test Error LR : {:10.6f}
+    Test Error SVM: {:10.6f}
+    Test Error EN : {:10.6f}
 
-    print(err_ensemble)
+    Train Error NB : {:10.6f}
+    Train Error LR : {:10.6f}
+    Train Error SVM: {:10.6f}
+    Train Error EN : {:10.6f}
+    '''.format(
+        test_err_nb, test_err_lr, test_err_svm, test_err_ensemble,
+        train_err_nb, train_err_lr, train_err_svm, train_err_ensemble
+    ))

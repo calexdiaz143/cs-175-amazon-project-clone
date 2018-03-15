@@ -4,6 +4,15 @@ import pickle as pkl
 
 MEMO_ROOT = 'static/'
 
+def load_txt(path): # unused
+    file = open(path + '.txt', 'r')
+    return file
+
+def save_txt(path, content):
+    file = open(path + '.txt', 'w')
+    file.write(content)
+    file.close()
+
 def load_pkl(path):
     file = open(path + '.pkl', 'rb')
     return pkl.load(file)

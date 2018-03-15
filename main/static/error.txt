@@ -1,0 +1,11 @@
+
+    Test Error NB :   0.321215
+    Test Error LR :   0.175465
+    Test Error SVM:   0.881308
+    Test Error EN :   0.282869
+
+    Train Error NB :   0.269056
+    Train Error LR :   0.000167
+    Train Error SVM:   0.565889
+    Train Error EN :   0.140833
+    
