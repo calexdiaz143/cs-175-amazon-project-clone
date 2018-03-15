@@ -34,3 +34,4 @@ A text-based machine learning thingy.
 - add a predict_train function to detect overfitting
 - maybe include some other classifiers or RNN
 - figure out how to make a confusion matrix
+- merge bows and see what happens
