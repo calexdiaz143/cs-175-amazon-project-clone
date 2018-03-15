@@ -36,3 +36,4 @@ A text-based machine learning thingy.
 - figure out how to make a confusion matrix
 - merge bows and see what happens
 - save result of predictions to file
+- remove assignment 2 from main folder
