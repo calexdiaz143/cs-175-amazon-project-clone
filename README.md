@@ -35,3 +35,4 @@ A text-based machine learning thingy.
 - maybe include some other classifiers or RNN
 - figure out how to make a confusion matrix
 - merge bows and see what happens
+- save result of predictions to file
