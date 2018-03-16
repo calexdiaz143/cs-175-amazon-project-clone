@@ -17,23 +17,6 @@ A text-based machine learning thingy.
 ## TODO
 - implement the tf-idf vectorizer
 - something about n-grams
-- change our method of parsing helpfulness
-  - current:
-    - set helpful=[0,0] to 0.5
-    - set helpful=[x,y] to x/y
-    - throw out anything under 0.5
-  - proposed:
-    - set helpful=[x,y] to log(x-(y-x))
-      - (i.e. logarithm of helpful minus unhelpful)
-    - keep everything, and keep helpfulness as a feature
-- implement a hash vectorizer maybe
-- filter reviews by language
-- fix reviewerID (error b/c it's too large)
-- include reviewerName as a feature
-  - b/c e.g. there's a guy named (Mike Tarrani "Jazz Drummer")
-- add a predict_train function to detect overfitting
-- maybe include some other classifiers or RNN
 - figure out how to make a confusion matrix
 - merge bows and see what happens
-- save result of predictions to file
-- remove assignment 2 from main folder
+- save results of predictions to file
