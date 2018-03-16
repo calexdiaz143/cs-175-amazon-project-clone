@@ -1,3 +1,4 @@
+.DS_Store
 *.pyc
 main/db/*.json
-.DS_Store
+main/static/clf_rf.pkl
