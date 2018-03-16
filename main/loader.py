@@ -2,19 +2,11 @@ from random import shuffle
 import numpy as np
 import json
 
-def get_helpful_percentage(ratio): #TODO: change this, and maybe put this back in parse_review
-    if(ratio[1] == 0):
-        return 50
-    return int(100 * ratio[0] / ratio[1])
-
 def parse_review(raw_review): # TODO: maybe put this back in get_category
     return [
         raw_review['summary'],
         raw_review['reviewText'],
-        1, 1, # TODO: figure out how to reduce the size of int(x, 36)
-        # int(raw_review['reviewerID'], 36),
-        # int(raw_review['asin'], 36),
-        get_helpful_percentage(raw_review['helpful']),
+        2 * int(raw_review['helpful'][0]) - int(raw_review['helpful'][1]),
         int(raw_review['overall']),
         raw_review['unixReviewTime']
     ]
@@ -25,7 +17,7 @@ def load_category(path, percent, cutoff):
     for json_review in content.readlines():
         raw_review = json.loads(json_review)
         review = parse_review(raw_review)
-        if review[4] >= 0.5:
+        if review[2] >= 0:
             reviews.append(review)
 
         if cutoff == 0:
