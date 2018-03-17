@@ -22,11 +22,14 @@ def error_ratio(Y, predictions):
             error += 1
     return error / Y.shape[0]
 
-# Normalized Confusion Matrix: Heavily based on the scikit-learn example here:
+# Normalized Confusion Matrix with zero'd out diagonal: Heavily based on the scikit-learn example here:
 # http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
 def disp_conf_matrix(Y, Y_hat, classes):
     cm = confusion_matrix(Y, Y_hat,labels=classes)
+    diagonal = np.diag_indices_from(cm)
+    cm[diagonal] = 0
     cm = cm.astype('float')/cm.sum(axis=1)[:, np.newaxis]
+    cm[diagonal] = 1
     plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
     plt.title('Confusion matrix')
     plt.colorbar()
