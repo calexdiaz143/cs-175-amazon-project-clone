@@ -6,7 +6,6 @@ loader.py - includes functions for loading the original Amazon review data (from
 parser.py - includes functions for transforming reviews' textual data into bag-of-words representation (via count vectorizer) so classifiers can process them
 trainer.py - includes functions for constructing classifiers
 tester.py - includes functions for returning classifier predictions and evaluation data (error rates, etc)
-project.ipynb - the Python notebook which demonstrates this project
 __init__.py - a file that allows this directory to be used as a Python module (for the website demo)
 db/ - a directory containing the original Amazon review data from Julian McAuley of UCSD (contents not submitted due to large file size)
 static/ - a directory containing saved classifiers, vectorizers, and data
