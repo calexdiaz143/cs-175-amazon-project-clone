@@ -48,6 +48,7 @@ def load_category(path, percent, cutoff):
 def load_categories(categories, percent, cutoff):
     '''
     Loads and processes original review data from the specified category files.
+    Returns a tuple (train_X, train_Y, test_X, test_Y) where X is the review data and Y is the label.
     
     categories: a list of category file basenames
     percent:    the percent of data to use as train data (the remainder is test data)
