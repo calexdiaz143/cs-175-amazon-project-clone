@@ -52,7 +52,7 @@ def load_categories(categories, percent, cutoff):
     
     categories: a list of category file basenames
     percent:    the percent of data to use as train data (the remainder is test data)
-    cutoff:  the number of lines to read from the category file (not the total number of reviews to use, since reviews with negative helpfulness are discarded)
+    cutoff:     the number of lines to read from the category file (not the total number of reviews to use, since reviews with negative helpfulness are discarded)
     '''
     train_reviews = []
     train_categories = []
