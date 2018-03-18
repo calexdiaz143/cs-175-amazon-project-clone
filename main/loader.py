@@ -2,7 +2,13 @@ from random import shuffle
 import numpy as np
 import json
 
-def parse_review(raw_review): # TODO: maybe put this back in get_category
+def parse_review(raw_review):
+    '''
+    Transforms original review data from a dictionary to a list.
+    Returns the data list in the order [summary, review, helpfulness, rating, time].
+    
+    raw_review: the review data in the original dictionary format
+    '''
     return [
         raw_review['summary'],
         raw_review['reviewText'],
@@ -12,6 +18,14 @@ def parse_review(raw_review): # TODO: maybe put this back in get_category
     ]
 
 def load_category(path, percent, cutoff):
+    '''
+    Loads and processes original review data line by line from the specified category file.
+    Returns a tuple (train, test) with train data and test data.
+    
+    path:    the filepath of the category file
+    percent: the percent of data to use as train data (the remainder is test data)
+    cutoff:  the number of lines to read from the category file (not the total number of reviews to use, since reviews with negative helpfulness are discarded)
+    '''
     content = open(path)
     reviews = []
     for json_review in content.readlines():
@@ -32,6 +46,13 @@ def load_category(path, percent, cutoff):
     return train, test
 
 def load_categories(categories, percent, cutoff):
+    '''
+    Loads and processes original review data from the specified category files.
+    
+    categories: a list of category file basenames
+    percent:    the percent of data to use as train data (the remainder is test data)
+    cutoff:  the number of lines to read from the category file (not the total number of reviews to use, since reviews with negative helpfulness are discarded)
+    '''
     train_reviews = []
     train_categories = []
     test_reviews = []
