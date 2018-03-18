@@ -5,7 +5,7 @@ from nltk.corpus import stopwords
 import numpy as np
 
 def sparsify(train_corpus, test_corpus):
-    ''' Transform corpora. '''
+    '''Transforms the corpora from the train and test data.'''
     # TODO: ngrams
     countVectorizer = CountVectorizer(stop_words=stopwords.words('english'), min_df=5)
     train_text_counts = countVectorizer.fit_transform(train_corpus)
@@ -14,7 +14,7 @@ def sparsify(train_corpus, test_corpus):
     return train_text_counts, test_text_counts, countVectorizer
 
 def separate_features(X):
-    ''' Separate textual features from other features. '''
+    '''Separates textual features from other features in the parsed review data.'''
     summary = []
     review = []
     other = []
@@ -25,7 +25,7 @@ def separate_features(X):
     return summary, review, other
 
 def fit_transform(train_X, test_X):
-    ''' Fit and transform textual features into BOWs so classifiers can handle them. '''
+    '''Fits and transforms textual features into BOWs so classifiers can handle them.'''
     train_X_summary, train_X_review, train_X_other = separate_features(train_X)
     test_X_summary, test_X_review, test_X_other = separate_features(test_X)
 
@@ -37,7 +37,7 @@ def fit_transform(train_X, test_X):
     return train_X_final, test_X_final, summary_vectorizer, review_vectorizer
 
 def transform(X, summary_vectorizer, review_vectorizer):
-    ''' Transform textual features into BOWs so classifiers can handle them. '''
+    '''Transforms textual features into BOWs so classifiers can handle them.'''
     X_summary, X_review, X_other = separate_features(X)
     X_summary_BOW = summary_vectorizer.transform(X_summary)
     X_review_BOW = review_vectorizer.transform(X_review)
