@@ -1,5 +1,5 @@
 Project 18 (Amazon Category Predictor) File Descriptions
-Note: The following files require the nltk, numpy, scipy, sklearn, matplotlin, and eli5 libraries to run.
+Note: The following files require the nltk, numpy, scipy, sklearn, matplotlib, and eli5 libraries to run.
 
 README.txt - contains a one-line description of each file in this project/ directory
 project.ipynb - a Jupyter notebook using Python 3 to run a demonstration of our project
