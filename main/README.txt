@@ -3,6 +3,7 @@ Note: The following files require the nltk, numpy, scipy, sklearn, matplotlin, a
 
 README.txt - contains a one-line description of each file in this project/ directory
 project.ipynb - a Jupyter notebook using Python 3 to run a demonstration of our project
+project.html - an exported Jupyter notebook which demonstrates our project
 src/ - all of the code developed for our project
     main.py - the main file of the project which loads, saves, trains, and tests Amazon review data; if imported, this file includes only a list of review categories
     memo.py - includes functions which simplify the process loading and overwriting saved data (from static/)
