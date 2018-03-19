@@ -13,12 +13,23 @@ def index(request):
             review['helpful'] = [0, 0]
         raw_review = main.loader.parse_review(review)
 
-        summary_CV = main.memo.load_pkl('/app/main/static/summary_cv')
-        review_CV = main.memo.load_pkl('/app/main/static/review_cv')
-        review = main.parser.transform([raw_review], summary_CV, review_CV)
+        summary_cv = main.memo.load_pkl('/app/main/static/summary_cv')
+        review_cv = main.memo.load_pkl('/app/main/static/review_cv')
+        review = main.parser.transform([raw_review], summary_cv, review_cv)
 
-        clf_LR = main.memo.load_pkl('/app/main/static/clf_lr')
-        prediction = clf_LR.predict(review)
+        clf_nb = main.memo.load_pkl('/app/main/static/clf_lr')
+        clf_bnb = main.memo.load_pkl('/app/main/static/clf_lr')
+        clf_lr = main.memo.load_pkl('/app/main/static/clf_lr')
+        clf_rf = main.memo.load_pkl('/app/main/static/clf_lr')
+        clf_gb = main.memo.load_pkl('/app/main/static/clf_lr')
+        predictions = [
+            clf_nb.predict(review),
+            clf_bnb.predict(review),
+            clf_lr.predict(review),
+            clf_rf.predict(review),
+            clf_gb.predict(review)
+        ]
+        prediction = main.tester.predict_ensemble(review, predictions)
 
         return HttpResponse(prediction)
     else:

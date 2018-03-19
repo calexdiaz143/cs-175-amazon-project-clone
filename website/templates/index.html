@@ -76,9 +76,11 @@
 				<div id="Amazon_Instant_Video">Amazon Instant Video</div>
 			</div>
 			<div class="info">
-				This website uses a logistic regression classifier trained on 750 reviews from each category.
+				This website uses a majority voting ensemble trained on 75 reviews from each category.
 				<br>
-				Tested on 250 reviews from each category, the classifier has an error rate of 17.5%.
+				The ensemble consists of Multinomial Naive Bayes, Bernoulli Naive Bayes, Logistic Regression, Random Forests, and Gradient Boosting classifiers.
+				<br>
+				Tested on 25 reviews from each category, the classifier has an error rate of 14.7%.
 			</div>
 		</div>
 		<script src="{% static 'index.js' %}"></script>
