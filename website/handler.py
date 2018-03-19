@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import urllib.parse, json
-import main.memo, main.loader, main.parser, main.tester
+import main.memo, main.loader, main.parser
+from main.tester import predict_ensemble
 
 def index(request):
     if request.method == 'POST':
@@ -29,7 +30,7 @@ def index(request):
             clf_rf.predict(review),
             clf_gb.predict(review)
         ]
-        prediction = main.tester.predict_ensemble(review, predictions)
+        prediction = predict_ensemble(review, predictions)
 
         return HttpResponse(prediction)
     else:
