@@ -1,7 +1,6 @@
 from __future__ import division
 from collections import Counter
 from sklearn.metrics import confusion_matrix
-import matplotlib.pyplot as plt
 import numpy as np
 
 def get_majority(prediction_list, index):
@@ -29,6 +28,7 @@ def error_ratio(Y, predictions):
 # http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
 def disp_conf_matrix(Y, Y_hat, classes):
     '''Displays a confusion matrix given a list of predictions, a list of the true labels, and a list of the corresponding classifiers.'''
+    import matplotlib.pyplot as plt
     cm = confusion_matrix(Y, Y_hat,labels=classes)
     diagonal = np.diag_indices_from(cm)
     cm[diagonal] = 0
