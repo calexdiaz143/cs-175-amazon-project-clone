@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import urllib.parse, json
-from main import memo, loader, parser, tester
+import main.memo, main.loader, main.parser, main.tester
 
 def index(request):
     if request.method == 'POST':
@@ -11,17 +11,17 @@ def index(request):
         review = json.loads(json_review)
         if review['helpful'][0] == None or review['helpful'][1] == None:
             review['helpful'] = [0, 0]
-        raw_review = loader.parse_review(review)
+        raw_review = main.loader.parse_review(review)
 
-        summary_cv = memo.load_pkl('/app/main/static/summary_cv')
-        review_cv = memo.load_pkl('/app/main/static/review_cv')
-        review = parser.transform([raw_review], summary_cv, review_cv)
+        summary_cv = main.memo.load_pkl('/app/main/static/summary_cv')
+        review_cv = main.memo.load_pkl('/app/main/static/review_cv')
+        review = main.parser.transform([raw_review], summary_cv, review_cv)
 
-        clf_nb = memo.load_pkl('/app/main/static/clf_lr')
-        clf_bnb = memo.load_pkl('/app/main/static/clf_lr')
-        clf_lr = memo.load_pkl('/app/main/static/clf_lr')
-        clf_rf = memo.load_pkl('/app/main/static/clf_lr')
-        clf_gb = memo.load_pkl('/app/main/static/clf_lr')
+        clf_nb = main.memo.load_pkl('/app/main/static/clf_lr')
+        clf_bnb = main.memo.load_pkl('/app/main/static/clf_lr')
+        clf_lr = main.memo.load_pkl('/app/main/static/clf_lr')
+        clf_rf = main.memo.load_pkl('/app/main/static/clf_lr')
+        clf_gb = main.memo.load_pkl('/app/main/static/clf_lr')
         predictions = [
             clf_nb.predict(review),
             clf_bnb.predict(review),
@@ -36,11 +36,11 @@ def index(request):
         return render(request, 'index.html')
 
 def predict(review, classifier):
-    import parser
+    import main.parser
     import numpy as np
     from scipy.sparse import csr_matrix, hstack
 
     review = csr_matrix(review)
-    tr, te = parser.parse_BOW([], review)
+    tr, te = main.parser.parse_BOW([], review)
 
     classifier_naive_bayes.predict(csr_matrix(review))
