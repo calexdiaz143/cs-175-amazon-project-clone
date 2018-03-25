@@ -34,9 +34,15 @@ def load_category(path, percent, cutoff):
         if review[2] >= 0:
             reviews.append(review)
 
+<<<<<<< HEAD
             cutoff -= 1
             if cutoff == 0:
                 break
+=======
+            if cutoff == 0:
+                break
+            cutoff -= 1
+>>>>>>> 186d033293ce04ae7a8f91965f20a3963f2d07c5
 
     shuffle(reviews)
 
