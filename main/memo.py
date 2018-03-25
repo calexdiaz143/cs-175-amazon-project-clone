@@ -47,12 +47,12 @@ def save_data(train_X, train_Y, test_X, test_Y, summary_cv, review_cv, root=MEMO
 def get_data(load_saved, overwrite_saved, categories, percent, cutoff, root=MEMO_ROOT):
     '''
     Loads and/or saves train data, test data, and vectorizers.
-    
+
     load_saved:      whether or not to load saved files
     overwrite_saved: whether or not to save data to a file
     categories:      a list of category file basenames
     percent:         the percent of data to use as train data (the remainder is test data)
-    cutoff:          the number of lines to read from the category file (not the total number of reviews to use, since reviews with negative helpfulness are discarded)
+    cutoff:          the number of reviews to use from the category file (skips unhelpful reviews)
     root:            the root directory from which to save/load
     '''
     if load_saved:
@@ -67,7 +67,7 @@ def get_data(load_saved, overwrite_saved, categories, percent, cutoff, root=MEMO
 def get_classifier(load_saved, overwrite_saved, classifier, train_X, train_Y, name, root=MEMO_ROOT):
     '''
     Loads and/or saves classifiers with the specified name.
-    
+
     load_saved:      whether or not to load saved files
     overwrite_saved: whether or not to save data to a file
     classifier:      the classifier object to save (parameter ignored if load_saved=true)
