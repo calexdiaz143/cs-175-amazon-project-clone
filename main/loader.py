@@ -6,7 +6,7 @@ def parse_review(raw_review):
     '''
     Transforms original review data from a dictionary to a list.
     Returns the data list in the order [summary, review, helpfulness, rating, time].
-    
+
     raw_review: the review data in the original dictionary format
     '''
     return [
@@ -21,10 +21,10 @@ def load_category(path, percent, cutoff):
     '''
     Loads and processes original review data line by line from the specified category file.
     Returns a tuple (train, test) with train data and test data.
-    
+
     path:    the filepath of the category file
     percent: the percent of data to use as train data (the remainder is test data)
-    cutoff:  the number of lines to read from the category file (not the total number of reviews to use, since reviews with negative helpfulness are discarded)
+    cutoff:  the number of reviews to use from the category file (skips unhelpful reviews)
     '''
     content = open(path)
     reviews = []
@@ -34,9 +34,9 @@ def load_category(path, percent, cutoff):
         if review[2] >= 0:
             reviews.append(review)
 
-        if cutoff == 0:
-            break
-        cutoff -= 1
+            cutoff -= 1
+            if cutoff == 0:
+                break
 
     shuffle(reviews)
 
@@ -49,10 +49,10 @@ def load_categories(categories, percent, cutoff):
     '''
     Loads and processes original review data from the specified category files.
     Returns a tuple (train_X, train_Y, test_X, test_Y) where X is the review data and Y is the label.
-    
+
     categories: a list of category file basenames
     percent:    the percent of data to use as train data (the remainder is test data)
-    cutoff:     the number of lines to read from the category file (not the total number of reviews to use, since reviews with negative helpfulness are discarded)
+    cutoff:  the number of reviews to use from the category file (skips unhelpful reviews)
     '''
     train_reviews = []
     train_categories = []
