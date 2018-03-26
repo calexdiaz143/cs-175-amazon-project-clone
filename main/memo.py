@@ -3,6 +3,7 @@ import numpy as np
 import pickle as pkl
 
 MEMO_ROOT = 'static/'
+SHOW_MESSAGES = False
 
 def load_txt(path): # unused
     '''Loads text from a given text file (excluding the extension).'''
@@ -58,10 +59,14 @@ def get_data(load_saved, overwrite_saved, categories, percent, cutoff, root=MEMO
     if load_saved:
         return load_data(root)
     import loader, parser
+    loader.SHOW_MESSAGES = SHOW_MESSAGES
     train_X, train_Y, test_X, test_Y = loader.load_categories(categories, percent, cutoff)
     train_X, test_X, summary_cv, review_cv = parser.fit_transform(train_X, test_X)
     if overwrite_saved:
         save_data(train_X, train_Y, test_X, test_Y, summary_cv, review_cv)
+    if SHOW_MESSAGES:
+        import message
+        message.say('All of the datasets are ready.')
     return train_X, train_Y, test_X, test_Y, summary_cv, review_cv
 
 def get_classifier(load_saved, overwrite_saved, classifier, train_X, train_Y, name, root=MEMO_ROOT):
@@ -81,4 +86,7 @@ def get_classifier(load_saved, overwrite_saved, classifier, train_X, train_Y, na
     clf = classifier(train_X, train_Y)
     if overwrite_saved:
         save_pkl(root + name, clf)
+    if SHOW_MESSAGES:
+        import message
+        message.say('The {} classifier is ready.'.format(clf.__class__.__name__))
     return clf

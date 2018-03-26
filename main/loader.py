@@ -2,6 +2,8 @@ from random import shuffle
 import numpy as np
 import json
 
+SHOW_MESSAGES = False
+
 def parse_review(raw_review):
     '''
     Transforms original review data from a dictionary to a list.
@@ -28,7 +30,8 @@ def load_category(path, percent, cutoff):
     '''
     content = open(path)
     reviews = []
-    for json_review in content.readlines():
+    while content.readline():
+        json_review = content.readline()
         raw_review = json.loads(json_review)
         review = parse_review(raw_review)
         if review[2] >= 0:
@@ -64,6 +67,9 @@ def load_categories(categories, percent, cutoff):
         train_categories.append([category] * train.shape[0])
         test_reviews.append(test)
         test_categories.append([category] * test.shape[0])
+        if SHOW_MESSAGES:
+            import message
+            message.say('The {} category is ready.'.format(category))
 
     train_reviews = np.concatenate(train_reviews)
     train_categories = np.concatenate(train_categories)
