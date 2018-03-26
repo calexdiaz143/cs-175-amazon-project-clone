@@ -28,19 +28,17 @@ def load_category(path, percent, cutoff):
     percent: the percent of data to use as train data (the remainder is test data)
     cutoff:  the number of reviews to use from the category file (skips unhelpful reviews)
     '''
-    content = open(path)
     reviews = []
-    while content.readline():
-        json_review = content.readline()
-        raw_review = json.loads(json_review)
-        review = parse_review(raw_review)
-        if review[2] >= 0:
-            reviews.append(review)
+    with open(path, 'r') as content:
+        for json_review in content:
+            raw_review = json.loads(json_review)
+            review = parse_review(raw_review)
+            if review[2] >= 0:
+                reviews.append(review)
 
-            cutoff -= 1
-            if cutoff == 0:
-                break
-
+                cutoff -= 1
+                if cutoff == 0:
+                    break
     shuffle(reviews)
 
     split_index = int(percent * len(reviews))
