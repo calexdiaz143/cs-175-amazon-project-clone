@@ -61,7 +61,7 @@ def download_stopwords_corpus():
     nltk.download('stopwords')
 
 if __name__ == '__main__':
-    # download_amazon_review_data()
-    # unzip_amazon_review_data()
+    download_amazon_review_data()
+    unzip_amazon_review_data()
     install_libraries()
     download_stopwords_corpus()
