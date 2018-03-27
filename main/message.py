@@ -3,5 +3,5 @@ import os
 
 def say(text):
     print(text)
-    if platform.system() != 'Windows':
+    if platform.system() == 'Darwin':
         os.system('say "' + text + '"')
