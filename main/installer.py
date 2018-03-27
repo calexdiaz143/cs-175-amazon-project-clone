@@ -8,13 +8,13 @@
 
 # NOTE 3: to start a screen, type
 #             screen -S SCREEN_NAME
-#         to detach a screen, type
+#         to detach a screen, type (within the screen)
 #             CTRL+A, D
 #         to view all screens, type
 #             screen -ls
 #         to return to a screen, type
 #             screen -x SCREEN_NAME
-#         to kill a screen, type
+#         to kill a screen, type (within the screen)
 #             CTRL+D
 
 import os
