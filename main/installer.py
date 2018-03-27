@@ -1,5 +1,22 @@
 # NOTE: this file assumes the root is the current directory
 
+# NOTE 2: when running on uci servers, do
+#             module load python/3.6.4
+#         instead of the default
+#             module load python/3.5.1
+#         in the .bash_profile
+
+# NOTE 3: to start a screen, type
+#             screen -S SCREEN_NAME
+#         to detach a screen, type
+#             CTRL+A, D
+#         to view all screens, type
+#             screen -ls
+#         to return to a screen, type
+#             screen -x SCREEN_NAME
+#         to kill a screen, type
+#             CTRL+D
+
 import os
 
 def download_amazon_review_data():
@@ -44,7 +61,7 @@ def download_stopwords_corpus():
     nltk.download('stopwords')
 
 if __name__ == '__main__':
-    download_amazon_review_data()
-    unzip_amazon_review_data()
+    # download_amazon_review_data()
+    # unzip_amazon_review_data()
     install_libraries()
     download_stopwords_corpus()
