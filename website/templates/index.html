@@ -11,9 +11,9 @@
 	<body>
 		<div id="title"></div>
 		<div id="container">
+			<h1>Amazon Category Predictor</h1>
+			<div class="divider"></div>
 			<div id="input">
-				<h1>Amazon Category Predictor</h1>
-				<div class="divider"></div>
 				<div id="review">
 					{% csrf_token %}
 					<div class="flex">
@@ -45,10 +45,11 @@
 						did not.
 					</div>
 				</div>
-				<div class="divider"></div>
 				<button id="demo" data-active="false">Activate Demo</button>
 				<button id="predict">Predict Product Category</button>
 			</div>
+			<div class="divider"></div>
+			<h2>Predicted Category</h2>
 			<div id="output">
 				<div id="Books">Books</div>
 				<div id="Electronics">Electronics</div>
@@ -57,7 +58,7 @@
 				<div id="Clothing_Shoes_and_Jewelry">Clothing Shoes and Jewelry</div>
 				<div id="Home_and_Kitchen">Home and Kitchen</div>
 				<div id="Kindle_Store">Kindle Store</div>
-				<div id="Sports_and_Outdoors">Sports and Outdoors</div>
+				<div id="Sports_and_Oudivoors">Sports and Oudivoors</div>
 				<div id="Cell_Phones_and_Accessories">Cell Phones and Accessories</div>
 				<div id="Health_and_Personal_Care">Health and Personal Care</div>
 				<div id="Toys_and_Games">Toys and Games</div>
@@ -75,12 +76,54 @@
 				<div id="Musical_Instruments">Musical Instruments</div>
 				<div id="Amazon_Instant_Video">Amazon Instant Video</div>
 			</div>
+			<div class="divider"></div>
+			<h2>About</h2>
 			<div class="info">
-				This website uses a majority voting ensemble trained on 75 reviews from each category.
+				This website uses a majority voting ensemble trained on 7,125 reviews from each category (171,000 in total).
 				<br>
-				The ensemble consists of Multinomial Naive Bayes, Bernoulli Naive Bayes, Logistic Regression, Random Forests, and Gradient Boosting classifiers.
+				Tested on 2,375 reviews from each category (57,000 in total), the classifier has an error rate of 16.7%.
 				<br>
-				Tested on 25 reviews from each category, the classifier has an error rate of 14.7%.
+				The following table shows a breakdown of this ensemble.
+				<table id="errors">
+				    <tr>
+				        <td>Classifier</td>
+				        <td>Training Error</td>
+				        <td>Testing Error</td>
+				    </tr>
+				    <tr>
+				        <td>Multinomial Naïve Bayes</td>
+				        <td>0.194497</td>
+				        <td>0.261053</td>
+				    </tr>
+				    <tr>
+				        <td>Bernoulli Naïve Bayes</td>
+				        <td>0.157228</td>
+				        <td>0.245649</td>
+				    </tr>
+				    <tr>
+				        <td>Logistic Regression</td>
+				        <td>0.001936</td>
+				        <td>0.214912</td>
+				    </tr>
+				    <tr>
+				        <td>Random Forests</td>
+				        <td>0.001450</td>
+				        <td>0.229561</td>
+				    </tr>
+				    <tr>
+				        <td>Gradient Boosting</td>
+				        <td>0.184240</td>
+				        <td>0.213105</td>
+				    </tr>
+				    <tr>
+				        <td>Ensemble of Above</td>
+				        <td>0.047860</td>
+				        <td>0.167000</td>
+				    </tr>
+				</table>
+				This project was made for the Project in Artifical Intelligence course (CS175) of the University of California, Irvine.
+				<br>
+				The project's team members consist of <a href="https://github.com/krazete">Ted Celis</a>, <a href="https://github.com/calexdiaz143">Cesar Diaz</a>, and <a href="https://github.com/mgintjee">Matthew Gintjee</a>.
 			</div>
 		</div>
 		<script src="{% static 'index.js' %}"></script>

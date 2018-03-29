@@ -38,7 +38,7 @@ button:hover {
 	background: #e7e7e7;
 	width: 90%;
 	height: 1px;
-	margin: 30px;
+	margin: 20px;
 }
 
 .flex {
@@ -140,8 +140,22 @@ button:hover {
 	border-radius: 4px;
 }
 
+#output > div {
+	width: 200;
+	display: inline-block;
+}
+
 .predicted {
 	background: #00ff00;
 	color: #000000;
 	font-weight: bold;
+}
+
+#errors {
+	font-family: monospace;
+	margin: 10px auto;
+}
+
+#errors td {
+	padding: 0px 10px;
 }
