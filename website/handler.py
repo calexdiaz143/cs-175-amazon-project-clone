@@ -19,15 +19,15 @@ def index(request):
 
         clf_nb = main.memo.load_pkl('/app/main/static/clf_nb')
         clf_bnb = main.memo.load_pkl('/app/main/static/clf_bnb')
+        # clf_rf = main.memo.load_pkl('/app/main/static/clf_rf') # excluded due to large file size (>7GB)
+        # clf_gb = main.memo.load_pkl('/app/main/static/clf_gb') # excluded due to long prediction time
         clf_lr = main.memo.load_pkl('/app/main/static/clf_lr')
-        clf_rf = main.memo.load_pkl('/app/main/static/clf_lr') # skip rf because file is too big (>7MB), uses clf_lr again to optimize ensemble voting
-        clf_gb = main.memo.load_pkl('/app/main/static/clf_gb')
         predictions = [
             clf_nb.predict(review),
             clf_bnb.predict(review),
-            clf_lr.predict(review),
-            clf_rf.predict(review),
-            clf_gb.predict(review)
+            # clf_rf.predict(review),
+            # clf_gb.predict(review),
+            clf_lr.predict(review)
         ]
         prediction = main.tester.predict_ensemble(review, predictions)
 
