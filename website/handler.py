@@ -17,11 +17,11 @@ def index(request):
         review_cv = main.memo.load_pkl('/app/main/static/review_cv')
         review = main.parser.transform([raw_review], summary_cv, review_cv)
 
-        clf_nb = main.memo.load_pkl('/app/main/static/clf_lr')
-        clf_bnb = main.memo.load_pkl('/app/main/static/clf_lr')
+        clf_nb = main.memo.load_pkl('/app/main/static/clf_nb')
+        clf_bnb = main.memo.load_pkl('/app/main/static/clf_bnb')
         clf_lr = main.memo.load_pkl('/app/main/static/clf_lr')
-        clf_rf = main.memo.load_pkl('/app/main/static/clf_lr')
-        clf_gb = main.memo.load_pkl('/app/main/static/clf_lr')
+        clf_rf = main.memo.load_pkl('/app/main/static/clf_lr') # skip rf because file is too big (>7MB), uses clf_lr again to optimize ensemble voting
+        clf_gb = main.memo.load_pkl('/app/main/static/clf_gb')
         predictions = [
             clf_nb.predict(review),
             clf_bnb.predict(review),
