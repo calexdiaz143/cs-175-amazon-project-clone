@@ -146,8 +146,8 @@ button:hover {
 }
 
 .predicted {
-	background: #00ff00;
-	color: #000000;
+	color: #00ff00;
+	text-shadow: 0 0 20px #ffffff;
 	font-weight: bold;
 }
 
